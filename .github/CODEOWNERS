@@ -1,10 +1,24 @@
-# Code owners genéricos por “roles”, ajusta a tus @usuarios o @equipos reales.
+# Orden importa: lo último que coincide gana.
 
-# App Android
-/app/ @android-team @reviewers-core
+# Dueños globales (fallback)
+* @mario-asenjo
 
-# CI / GitHub Actions
-/.github/ @devops-team @reviewers-core
+# CI / GitHub config
+/.github/ @mario-asenjo @rube19-hub
 
 # Documentación
-/docs/ @docs-team @reviewers-core
+/docs/ @jorgeriverapozuelo @mario-asenjo
+*.md @jorgeriverapozuelo
+
+# App Android por “paquetes”
+/app/src/main/java/com/masenjo_android/asociacionmayoresvillanueva/agent/ @mario-asenjo
+/app/src/test/java/com/masenjo_android/asociacionmayoresvillanueva/agent/ @mario-asenjo
+
+/app/src/main/java/com/masenjo_android/asociacionmayoresvillanueva/voice/ @yulenrojas
+/app/src/main/java/com/masenjo_android/asociacionmayoresvillanueva/ui/ @jordiswag
+/app/src/main/java/com/masenjo_android/asociacionmayoresvillanueva/data/ @rube19-hub
+/app/src/main/java/com/masenjo_android/asociacionmayoresvillanueva/domain/ @jorgeriverapozuelo
+/app/src/main/java/com/masenjo_android/asociacionmayoresvillanueva/common/ @jorgeriverapozuelo @mario-asenjo
+
+# Recursos Android (UI/UX)
+#/app/src/main/res/ @jordiswag
