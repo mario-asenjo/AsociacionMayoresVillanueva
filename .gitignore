@@ -1,0 +1,38 @@
+# --- Android / Gradle ---
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+out/
+build/
+.gradle/
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+
+# --- IntelliJ / Android Studio ---
+.idea/
+*.iml
+*.ipr
+*.iws
+.navigation/
+logcat.txt
+
+# --- Kotlin ---
+.kotlin/
+
+# --- Mac / Windows ---
+.DS_Store
+Thumbs.db
+
+# --- Keystores / secrets ---
+*.jks
+*.keystore
+**/google-services.json
+
+# --- Misc ---
+*.swp

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Asociación Mayores Villanueva</string>
+
+    <string name="title_main">Centro de Mayores – Villanueva</string>
+    <string name="hint_query">Escribe tu consulta</string>
+    <string name="action_send">Enviar</string>
+    <string name="action_speak">Hablar</string>
+    <string name="status_ready">Listo.</string>
+
+    <string name="cd_query_input">Campo de texto para escribir una consulta</string>
+    <string name="cd_send">Enviar consulta</string>
+    <string name="cd_speak">Hablar por voz</string>
+    <string name="cd_results_list">Lista de resultados</string>
+    <string name="cd_activity_photo">Imagen de la actividad</string>
+</resources>

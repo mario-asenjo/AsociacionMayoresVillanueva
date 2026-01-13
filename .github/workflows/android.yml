@@ -1,0 +1,42 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Configurar Gradle (cache + wrapper validation)
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Permisos gradlew
+        run: chmod +x ./gradlew
+
+      - name: Verificar formato (ktlint)
+        run: ./gradlew --no-daemon ktlintCheck
+
+      - name: Unit tests
+        run: ./gradlew --no-daemon test
+
+      - name: Android Lint
+        run: ./gradlew --no-daemon lint
+
+      - name: Build Debug
+        run: ./gradlew --no-daemon assembleDebug

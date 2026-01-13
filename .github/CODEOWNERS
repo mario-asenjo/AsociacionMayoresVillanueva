@@ -1,0 +1,10 @@
+# Code owners genéricos por “roles”, ajusta a tus @usuarios o @equipos reales.
+
+# App Android
+/app/ @android-team @reviewers-core
+
+# CI / GitHub Actions
+/.github/ @devops-team @reviewers-core
+
+# Documentación
+/docs/ @docs-team @reviewers-core
