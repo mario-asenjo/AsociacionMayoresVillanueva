@@ -7,6 +7,8 @@
     <string name="action_send">Enviar</string>
     <string name="action_speak">Hablar</string>
     <string name="status_ready">Listo.</string>
+    <string name="cd_loading">Cargando</string>
+
 
     <string name="cd_query_input">Campo de texto para escribir una consulta</string>
     <string name="cd_send">Enviar consulta</string>
