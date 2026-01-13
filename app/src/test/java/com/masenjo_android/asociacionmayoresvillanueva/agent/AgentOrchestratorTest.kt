@@ -1,6 +1,6 @@
 package com.masenjo_android.asociacionmayoresvillanueva.agent
 
-import org.junit.Assert.assertTrue
+import junit.framework.TestCase.assertTrue
 import org.junit.Test
 
 class AgentOrchestratorTest {

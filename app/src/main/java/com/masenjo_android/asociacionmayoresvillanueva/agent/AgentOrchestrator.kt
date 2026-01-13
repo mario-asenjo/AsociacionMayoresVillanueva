@@ -1,51 +1,82 @@
 package com.masenjo_android.asociacionmayoresvillanueva.agent
 
+import com.masenjo_android.asociacionmayoresvillanueva.domain.model.ActivityItem
+
 class AgentOrchestrator(
   private val parser: AgentKeywordParser = AgentKeywordParser(),
-  private val activitiesProvider: ActivitiesProvider = MockActivitiesProvider(),
 ) {
 
-  fun handle(userText: String): AgentResponse {
-    val trimmed = userText.trim()
-    if (trimmed.isBlank()) {
-      return AgentResponse.AskForFields(
-        fieldsNeeded = listOf("Escribe o di qué necesitas (por ejemplo: “actividades hoy”)."),
-      )
-    }
+  fun handle(text: String): AgentResponse {
+    val intent = parser.parse(text)
 
-    return when (val intent = parser.parse(trimmed)) {
+    return when (intent) {
       is AgentIntent.QueryActivities -> {
-        val list = activitiesProvider.getActivities(intent.scope)
-        if (list.isEmpty()) {
-          AgentResponse.ShowMessage("No he encontrado actividades por ahora.")
-        } else {
-          AgentResponse.ShowActivities(list)
-        }
+        AgentResponse.ShowActivities(mockActivities(intent.scope))
       }
 
       is AgentIntent.CreateComplaint -> {
-        AgentResponse.ShowMessage("Función en construcción… (pronto podrás enviar propuestas/quejas)")
+        AgentResponse.ShowMessage("Gracias. He registrado tu queja/propuesta (placeholder).")
       }
 
       is AgentIntent.RegisterToActivity -> {
-        AgentResponse.ShowMessage("Inscripción/desinscripción: en construcción…")
+        AgentResponse.ShowMessage("Te apunto a la actividad (placeholder).")
       }
 
       is AgentIntent.UnregisterFromActivity -> {
-        AgentResponse.ShowMessage("Inscripción/desinscripción: en construcción…")
+        AgentResponse.ShowMessage("Te doy de baja de la actividad (placeholder).")
       }
 
       is AgentIntent.ContactMonitor -> {
-        AgentResponse.ShowMessage("Enviar correo a monitores: en construcción…")
+        AgentResponse.ShowMessage("Puedo contactar con un monitor (placeholder).")
       }
 
       is AgentIntent.RedeemRewards -> {
-        AgentResponse.ShowMessage("Canje de experiencia por recompensas: en construcción…")
+        AgentResponse.ShowMessage("Recompensas: en construcción…")
       }
 
       is AgentIntent.Unknown -> {
-        AgentResponse.ShowMessage("No he entendido la petición todavía. Prueba con “actividades”.")
+        if (text.isBlank()) {
+          AgentResponse.AskForFields(listOf("Escribe algo, por ejemplo: “actividades hoy”."))
+        } else {
+          AgentResponse.ShowMessage("No he entendido: prueba con “actividades hoy/mañana”.")
+        }
       }
     }
+  }
+
+  private fun mockActivities(scope: ActivitiesScope): List<ActivityItem> {
+    val whenText = when (scope) {
+      ActivitiesScope.TODAY -> "Hoy"
+      ActivitiesScope.UPCOMING -> "Próximas"
+      ActivitiesScope.REGISTERED -> "Mis inscritas"
+      ActivitiesScope.AVAILABLE -> "Disponibles"
+    }
+
+    return listOf(
+      ActivityItem(
+        id = "a1",
+        title = "Gimnasia suave ($whenText)",
+        dateTime = "10:00",
+        placeName = "Sala 1",
+        tags = listOf("movilidad", "salud"),
+        placePhotoUrl = null,
+      ),
+      ActivityItem(
+        id = "a2",
+        title = "Paseo en grupo ($whenText)",
+        dateTime = "12:00",
+        placeName = "Parque",
+        tags = listOf("cardio", "social"),
+        placePhotoUrl = null,
+      ),
+      ActivityItem(
+        id = "a3",
+        title = "Estiramientos ($whenText)",
+        dateTime = "17:30",
+        placeName = "Sala 2",
+        tags = listOf("flexibilidad"),
+        placePhotoUrl = null,
+      ),
+    )
   }
 }
