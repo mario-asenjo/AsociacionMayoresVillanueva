@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Asociación Mayores Villanueva</string>
+    <string name="app_name">Asociación de Mayores Villanueva</string>
 
     <string name="title_main">Centro de Mayores – Villanueva</string>
     <string name="hint_query">Escribe tu consulta</string>
