@@ -12,60 +12,82 @@ import com.masenjo_android.asociacionmayoresvillanueva.ui.adapters.ActivitiesAda
 import com.masenjo_android.asociacionmayoresvillanueva.ui.viewmodels.MainViewModel
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainViewModel : ViewModel() {
 
-    private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainViewModel by viewModels()
+  private val orchestrator = AgentOrchestrator()
 
-    private val adapter = ActivitiesAdapter(
-        onClick = {
-            Toast.makeText(this, "Detalle (placeholder): ${it.title}", Toast.LENGTH_SHORT).show()
-        },
+  private val _uiModel = MutableStateFlow(MainUiModel())
+  val uiModel: StateFlow<MainUiModel> = _uiModel.asStateFlow()
+
+  fun onSendQuery(text: String) {
+    // 1️⃣ Estado loading
+    _uiModel.value = _uiModel.value.copy(
+      isLoading = true,
+      message = null,
     )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    val response = orchestrator.handle(text)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    when (response) {
+      is AgentResponse.ShowActivities -> {
+        _uiModel.value = MainUiModel(
+          isLoading = false,
+          items = response.list,
+          message = "Mostrando actividades",
+        )
+      }
 
-        setupUi()
-        observeState()
+      is AgentResponse.ShowMessage -> {
+        _uiModel.value = MainUiModel(
+          isLoading = false,
+          message = response.text,
+        )
+      }
+
+      is AgentResponse.ShowError -> {
+        _uiModel.value = MainUiModel(
+          isLoading = false,
+          message = "Error: ${response.text}",
+        )
+      }
+
+      is AgentResponse.AskForFields -> {
+        _uiModel.value = MainUiModel(
+          isLoading = false,
+          message = "Faltan datos: ${response.fieldsNeeded.joinToString()}",
+        )
+      }
     }
+  }
 
-    private fun setupUi() {
-        binding.resultsRecycler.layoutManager = LinearLayoutManager(this)
-        binding.resultsRecycler.adapter = adapter
+  fun onSpeakClicked() {
+    _uiModel.value = _uiModel.value.copy(
+      message = "Funcionalidad de voz en construcción…",
+    )
+  }
+}
 
-        binding.sendButton.setOnClickListener {
-            sendQuery()
+
+  private fun observeState() {
+    lifecycleScope.launch {
+      viewModel.uiModel.collect { model ->
+
+        // 1️⃣ Mensaje de estado
+        binding.statusText.text = model.message ?: ""
+
+        // 2️⃣ Loading
+        binding.statusText.visibility =
+          if (model.isLoading) android.view.View.VISIBLE else android.view.View.VISIBLE
+
+        // 3️⃣ Lista
+        adapter.submitList(model.items)
+
+        // 4️⃣ Estado vacío
+        if (!model.isLoading && model.items.isEmpty()) {
+          binding.statusText.text = "No hay actividades disponibles"
         }
-
-        binding.speakButton.setOnClickListener {
-            viewModel.onSpeakClicked()
-        }
-
-        binding.queryEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEND) {
-                sendQuery()
-                true
-            } else {
-                false
-            }
-        }
+      }
     }
+  }
 
-    private fun sendQuery() {
-        val text = binding.queryEditText.text?.toString().orEmpty()
-        viewModel.onSendQuery(text)
-    }
-
-    private fun observeState() {
-        lifecycleScope.launch {
-            viewModel.uiModel.collect { model ->
-                binding.statusText.text = model.status
-                adapter.submitList(model.items)
-            }
-        }
-    }
 }
