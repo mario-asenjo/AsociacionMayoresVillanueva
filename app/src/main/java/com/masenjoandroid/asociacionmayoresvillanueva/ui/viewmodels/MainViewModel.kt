@@ -10,10 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-data class MainUiModel(
-  val items: List<ActivityItem> = emptyList(),
-  val status: String = "Listo."
-)
+data class MainUiModel(val items: List<ActivityItem> = emptyList(), val status: String = "Listo.")
 
 class MainViewModel : ViewModel() {
 
@@ -21,8 +18,6 @@ class MainViewModel : ViewModel() {
 
   var ttsEngine: TextToSpeechEngine? = null
   var sttEngine: SpeechToTextEngine? = null
-
-  private var pendingEnrollment: ActivityItem? = null
 
   private val _uiModel = MutableStateFlow(MainUiModel())
   val uiModel: StateFlow<MainUiModel> = _uiModel.asStateFlow()
@@ -32,66 +27,76 @@ class MainViewModel : ViewModel() {
 
     when (response) {
       is AgentResponse.ShowActivities -> {
+        val list = response.list
         _uiModel.value = _uiModel.value.copy(
-          items = response.list,
-          status = "Mostrando actividades."
+          items = list,
+          status = if (list.isEmpty()) {
+            "No hay actividades para mostrar."
+          } else {
+            "Mostrando ${list.size} actividades."
+          }
         )
+        speakActivities(list)
       }
       is AgentResponse.ShowMessage -> {
         _uiModel.value = _uiModel.value.copy(status = response.text)
+        speak(response.text)
       }
       is AgentResponse.ShowError -> {
-        _uiModel.value = _uiModel.value.copy(
-          status = "Error: ${response.text}"
-        )
+        val msg = "Error: ${response.text}"
+        _uiModel.value = _uiModel.value.copy(status = msg)
+        speak(msg)
       }
       is AgentResponse.AskForFields -> {
-        _uiModel.value = _uiModel.value.copy(
-          status = response.fieldsNeeded.joinToString(" ")
-        )
+        val msg = response.fieldsNeeded.joinToString(" ")
+        _uiModel.value = _uiModel.value.copy(status = msg)
+        speak(msg)
       }
     }
   }
 
-  fun onActivitySelected(activity: ActivityItem) {
-    pendingEnrollment = activity
-    val question = "¿Quieres apuntarte a ${activity.title}?"
-    _uiModel.value = _uiModel.value.copy(status = question)
-    ttsEngine?.speak(question)
-  }
-
   fun onMicClicked() {
+    // Paramos TTS antes de escuchar para que no interfieran.
+    ttsEngine?.stop()
+
+    _uiModel.value = _uiModel.value.copy(
+      status = "🎙️ Escuchando… Habla ahora."
+    )
+
     sttEngine?.startListening(
       onResult = { text ->
-        val normalized = text.lowercase()
-
-        when {
-          pendingEnrollment != null && normalized.contains("sí") -> {
-            val activity = pendingEnrollment!!
-            pendingEnrollment = null
-
-            val confirmation = "Te has apuntado a ${activity.title}"
-            _uiModel.value = _uiModel.value.copy(status = confirmation)
-            ttsEngine?.speak(confirmation)
-          }
-
-          pendingEnrollment != null && normalized.contains("no") -> {
-            pendingEnrollment = null
-            val cancel = "De acuerdo, no te apunto"
-            _uiModel.value = _uiModel.value.copy(status = cancel)
-            ttsEngine?.speak(cancel)
-          }
-
-          else -> {
-            onSendQuery(text)
-          }
-        }
+        // Voice-First: auto-envía la query reconocida
+        onSendQuery(text)
       },
       onError = { error ->
         _uiModel.value = _uiModel.value.copy(
-          status = "Error de voz: $error"
+          status = "🎙️ $error"
         )
+        // En errores de voz, también lo leemos en voz alta (opcional).
+        // Si se prefiere no hablar errores cuando el micro falla, loquitamos.
+        speak(error)
       }
     )
+  }
+
+  private fun speak(text: String) {
+    ttsEngine?.speak(text)
+  }
+
+  private fun speakActivities(list: List<ActivityItem>) {
+    if (list.isEmpty()) {
+      speak("No hay actividades disponibles ahora mismo.")
+      return
+    }
+
+    val top = list.take(3)
+    val details = top.mapIndexed { idx, item ->
+      val time = item.dateTime.takeIf { it.isNotBlank() } ?: "sin hora"
+      val place = item.placeName.takeIf { it.isNotBlank() } ?: "sin ubicación"
+      "${idx + 1}. ${item.title}. A las $time, en $place."
+    }.joinToString(" ")
+    val more = if (list.size > 3) "Y ${list.size - 3} más." else ""
+
+    speak("He encontrado ${list.size} actividades. $details $more")
   }
 }

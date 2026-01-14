@@ -75,7 +75,7 @@ class AgentKeywordParser {
     needles.any { text.contains(normalize(it)) }
 
   private fun normalize(input: String): String {
-    val lower = input.lowercase(Locale("es", "ES"))
+    val lower = input.lowercase(Locale.forLanguageTag("es-ES"))
     val normalized = Normalizer.normalize(lower, Normalizer.Form.NFD)
     // Quita diacríticos
     return normalized.replace("\\p{Mn}+".toRegex(), "")

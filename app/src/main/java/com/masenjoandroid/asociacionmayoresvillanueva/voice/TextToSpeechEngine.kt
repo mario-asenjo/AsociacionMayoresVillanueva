@@ -5,13 +5,18 @@ package com.masenjoandroid.asociacionmayoresvillanueva.voice
  * Permite desacoplar la lógica de negocio de la implementación de Android.
  */
 interface TextToSpeechEngine {
-    /**
-     * Pronuncia el texto indicado.
-     */
-    fun speak(text: String)
+  /**
+   * Pronuncia el texto indicado.
+   */
+  fun speak(text: String)
 
-    /**
-     * Libera los recursos del motor.
-     */
-    fun shutdown()
+  /**
+   * Para cualquier locución en curso (sin liberar recursos).
+   */
+  fun stop()
+
+  /**
+   * Libera los recursos del motor.
+   */
+  fun shutdown()
 }

@@ -6,17 +6,24 @@ package com.masenjoandroid.asociacionmayoresvillanueva.voice
  */
 class FakeTextToSpeechEngine : TextToSpeechEngine {
 
-    var lastSpokenText: String? = null
-        private set
+  var lastSpokenText: String? = null
+    private set
 
-    var isShutdown = false
-        private set
+  var isStopped: Boolean = false
 
-    override fun speak(text: String) {
-        lastSpokenText = text
-    }
+  var isShutdown = false
+    private set
 
-    override fun shutdown() {
-        isShutdown = true
-    }
+  override fun speak(text: String) {
+    isStopped = false
+    lastSpokenText = text
+  }
+
+  override fun stop() {
+    isStopped = true
+  }
+
+  override fun shutdown() {
+    isShutdown = true
+  }
 }
