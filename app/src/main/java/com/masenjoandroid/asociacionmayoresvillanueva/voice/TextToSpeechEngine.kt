@@ -11,6 +11,11 @@ interface TextToSpeechEngine {
     fun speak(text: String)
 
     /**
+     * Para cualquier locución en curso (sin liberar recursos).
+     */
+    fun stop()
+
+  /**
      * Libera los recursos del motor.
      */
     fun shutdown()

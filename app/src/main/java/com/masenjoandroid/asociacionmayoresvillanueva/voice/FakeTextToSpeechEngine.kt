@@ -9,11 +9,18 @@ class FakeTextToSpeechEngine : TextToSpeechEngine {
     var lastSpokenText: String? = null
         private set
 
+    var isStopped: Boolean = false
+
     var isShutdown = false
         private set
 
     override fun speak(text: String) {
+        isStopped = false
         lastSpokenText = text
+    }
+
+    override fun stop() {
+        isStopped = true
     }
 
     override fun shutdown() {
