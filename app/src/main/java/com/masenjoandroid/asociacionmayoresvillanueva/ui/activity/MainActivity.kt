@@ -7,7 +7,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.masenjoandroid.asociacionmayoresvillanueva.databinding.ActivityMainBinding
 import com.masenjoandroid.asociacionmayoresvillanueva.ui.adapters.ActivitiesAdapter
 import com.masenjoandroid.asociacionmayoresvillanueva.ui.viewmodels.MainViewModel
 import kotlinx.coroutines.launch
@@ -15,6 +14,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import com.masenjoandroid.asociacionmayoresvillanueva.app.databinding.ActivityMainBinding
 import com.masenjoandroid.asociacionmayoresvillanueva.voice.SpeechToTextManager
 import com.masenjoandroid.asociacionmayoresvillanueva.voice.TextToSpeechManager
 
@@ -22,11 +22,11 @@ class MainActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityMainBinding
   private val viewModel: MainViewModel by viewModels()
-  
+
   // Mantenemos referencia para el ciclo de vida
   private lateinit var ttsManager: TextToSpeechManager
   private lateinit var sttManager: SpeechToTextManager
-             
+
   private val requestPermissionLauncher =
       registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
           if (isGranted) {
@@ -44,11 +44,11 @@ class MainActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    
+
     // Inicializar TTS y STT
     ttsManager = TextToSpeechManager(this)
     sttManager = SpeechToTextManager(this)
-    
+
     // Inyectar en ViewModel
     viewModel.ttsEngine = ttsManager
     viewModel.sttEngine = sttManager
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
     observeState()
     binding.statusText.text = "Pantalla cargada ✅"
   }
-  
+
   override fun onDestroy() {
       super.onDestroy()
       if (::ttsManager.isInitialized) {

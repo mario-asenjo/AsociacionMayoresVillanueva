@@ -10,6 +10,10 @@ android {
   namespace = "com.masenjoandroid.asociacionmayoresvillanueva.app"
   compileSdk = 36
 
+  buildFeatures {
+    viewBinding = true
+  }
+
   defaultConfig {
     applicationId = "com.masenjoandroid.asociacionmayoresvillanueva.app"
     minSdk = 26
