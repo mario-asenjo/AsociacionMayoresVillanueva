@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "format": "JSON",
+    "version": "1.1.0",
+    "projectId": "hackaton-25-26",
+    "resourcePath": [],
+    "recursive": false,
+    "creationTime": 1768380597,
+    "app": "firefoo"
+  },
+  "data": {
+    "__collections__": {
+      "peticion_cumplimento": {
+        "QrlreVJY5RB3Y5bYuT9l": {
+          "duracion": "",
+          "estado": "",
+          "id_actividad": "",
+          "id_usuario": "",
+          "__collections__": {}
+        }
+      },
+      "quejas": {
+        "iI9k7ezjuMDX41oSLofo": {
+          "asunto": "",
+          "id_usuario": "",
+          "registro_horario": {
+            "__time__": "2026-01-13T11:55:34.724Z"
+          },
+          "titulo": "",
+          "__collections__": {}
+        }
+      },
+      "actividades": {
+        "iPKEPJrKD1nxJmJwK5vq": {
+          "etiquetas": [
+            ""
+          ],
+          "fecha_hora": {
+            "__time__": "2026-01-13T11:50:55.948Z"
+          },
+          "imagen ": "",
+          "nombre": "",
+          "ubicación": "",
+          "__collections__": {}
+        }
+      },
+      "registro ": {
+        "hV6BzhTiw5efG4Engq05": {
+          "estado": "",
+          "id_activiad": "",
+          "id_usuario": "",
+          "__collections__": {}
+        }
+      },
+      "titulo": {
+        "0MjA1A0fai1kB25btD0S": {
+          "titulo": "",
+          "__collections__": {}
+        }
+      },
+      "usuarios": {
+        "uTxjIlmxtBosRv07mWAH": {
+          "experiencia": 100,
+          "nombre": "",
+          "rol": [
+            ""
+          ],
+          "__collections__": {}
+        }
+      }
+    }
+  }
+}
