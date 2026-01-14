@@ -5,14 +5,11 @@
     <item name="colorPrimary">@color/md_theme_light_primary</item>
     <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
 
-    <item name="android:windowBackground">@android:color/white</item>
     <item name="android:colorBackground">@color/md_theme_light_background</item>
     <item name="colorOnBackground">@color/md_theme_light_onBackground</item>
 
     <!-- CLAVE: fondo de ventana -->
     <item name="android:windowBackground">@color/md_theme_light_background</item>
 
-    <!-- Opcional (evita “forzar oscuro” del sistema) -->
-    <item name="android:forceDarkAllowed">false</item>
   </style>
 </resources>
