@@ -4,21 +4,25 @@ import androidx.lifecycle.ViewModel
 import com.masenjoandroid.asociacionmayoresvillanueva.agent.AgentOrchestrator
 import com.masenjoandroid.asociacionmayoresvillanueva.agent.AgentResponse
 import com.masenjoandroid.asociacionmayoresvillanueva.domain.model.ActivityItem
+import com.masenjoandroid.asociacionmayoresvillanueva.voice.SpeechToTextEngine
+import com.masenjoandroid.asociacionmayoresvillanueva.voice.TextToSpeechEngine
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import com.masenjoandroid.asociacionmayoresvillanueva.voice.TextToSpeechEngine
-import com.masenjoandroid.asociacionmayoresvillanueva.voice.SpeechToTextEngine
 
-data class MainUiModel(val items: List<ActivityItem> = emptyList(), val status: String = "Listo.")
+data class MainUiModel(
+  val items: List<ActivityItem> = emptyList(),
+  val status: String = "Listo."
+)
 
 class MainViewModel : ViewModel() {
 
   private val orchestrator = AgentOrchestrator()
 
- // Setter injection para evitar refactorizar toda la DI de golpe
   var ttsEngine: TextToSpeechEngine? = null
   var sttEngine: SpeechToTextEngine? = null
+
+  private var pendingEnrollment: ActivityItem? = null
 
   private val _uiModel = MutableStateFlow(MainUiModel())
   val uiModel: StateFlow<MainUiModel> = _uiModel.asStateFlow()
@@ -30,13 +34,11 @@ class MainViewModel : ViewModel() {
       is AgentResponse.ShowActivities -> {
         _uiModel.value = _uiModel.value.copy(
           items = response.list,
-          status = "Mostrando actividades (mock)."
+          status = "Mostrando actividades."
         )
       }
       is AgentResponse.ShowMessage -> {
-        _uiModel.value = _uiModel.value.copy(
-          status = response.text
-        )
+        _uiModel.value = _uiModel.value.copy(status = response.text)
       }
       is AgentResponse.ShowError -> {
         _uiModel.value = _uiModel.value.copy(
@@ -51,28 +53,45 @@ class MainViewModel : ViewModel() {
     }
   }
 
-  fun onSpeakClicked() {
-    val textToSpeak = _uiModel.value.status
-    // Hablamos el estado actual si hay motor disponible
-    ttsEngine?.speak(textToSpeak)
-    
-    _uiModel.value = _uiModel.value.copy(
-      status = "Hablando: $textToSpeak"
-    )
+  fun onActivitySelected(activity: ActivityItem) {
+    pendingEnrollment = activity
+    val question = "¿Quieres apuntarte a ${activity.title}?"
+    _uiModel.value = _uiModel.value.copy(status = question)
+    ttsEngine?.speak(question)
   }
 
   fun onMicClicked() {
-      // Escuchar
-      sttEngine?.startListening(
-          onResult = { text ->
-              // Cuando hay resultado, enviamos la query
-              onSendQuery(text)
-          },
-          onError = { error ->
-              _uiModel.value = _uiModel.value.copy(
-                  status = "Error voz: $error"
-              )
+    sttEngine?.startListening(
+      onResult = { text ->
+        val normalized = text.lowercase()
+
+        when {
+          pendingEnrollment != null && normalized.contains("sí") -> {
+            val activity = pendingEnrollment!!
+            pendingEnrollment = null
+
+            val confirmation = "Te has apuntado a ${activity.title}"
+            _uiModel.value = _uiModel.value.copy(status = confirmation)
+            ttsEngine?.speak(confirmation)
           }
-      )
+
+          pendingEnrollment != null && normalized.contains("no") -> {
+            pendingEnrollment = null
+            val cancel = "De acuerdo, no te apunto"
+            _uiModel.value = _uiModel.value.copy(status = cancel)
+            ttsEngine?.speak(cancel)
+          }
+
+          else -> {
+            onSendQuery(text)
+          }
+        }
+      },
+      onError = { error ->
+        _uiModel.value = _uiModel.value.copy(
+          status = "Error de voz: $error"
+        )
+      }
+    )
   }
 }

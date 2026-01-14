@@ -15,4 +15,6 @@
     <string name="cd_speak">Hablar por voz</string>
     <string name="cd_results_list">Lista de resultados</string>
     <string name="cd_activity_photo">Imagen de la actividad</string>
+    <string name="cd_profile_image">Abrir perfil</string>
+
 </resources>
