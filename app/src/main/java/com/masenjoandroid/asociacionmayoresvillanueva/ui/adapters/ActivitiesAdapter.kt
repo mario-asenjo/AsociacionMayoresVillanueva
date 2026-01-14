@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.masenjoandroid.asociacionmayoresvillanueva.app.databinding.ItemActivityBinding
 import com.masenjoandroid.asociacionmayoresvillanueva.domain.model.ActivityItem
 
-class ActivitiesAdapter :
-  ListAdapter<ActivityItem, ActivitiesAdapter.VH>(DIFF) {
+class ActivitiesAdapter : ListAdapter<ActivityItem, ActivitiesAdapter.VH>(DIFF) {
 
   private var onItemClick: ((ActivityItem) -> Unit)? = null
 
@@ -23,25 +22,22 @@ class ActivitiesAdapter :
       parent,
       false
     )
-    return VH(binding)
+    return VH(binding) { item -> onItemClick?.invoke(item) }
   }
 
   override fun onBindViewHolder(holder: VH, position: Int) {
     holder.bind(getItem(position))
   }
 
-  inner class VH(
-    private val binding: ItemActivityBinding
-  ) : RecyclerView.ViewHolder(binding.root) {
+  class VH(private val binding: ItemActivityBinding, private val click: (ActivityItem) -> Unit) :
+    RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: ActivityItem) {
       binding.title.text = item.title
       binding.subtitle.text = "${item.dateTime} · ${item.placeName}"
       binding.tags.text = item.tags.joinToString(" ") { "#$it" }
 
-      binding.root.setOnClickListener {
-        onItemClick?.invoke(item)
-      }
+      binding.root.setOnClickListener { click(item) }
     }
   }
 

@@ -6,5 +6,5 @@ data class ActivityItem(
   val dateTime: String,
   val placeName: String,
   val placePhotoUrl: String = "",
-  val tags: List<String> = emptyList(),
+  val tags: List<String> = emptyList()
 )
