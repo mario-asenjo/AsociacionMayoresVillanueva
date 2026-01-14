@@ -57,7 +57,7 @@ class AgentOrchestrator(private val parser: AgentKeywordParser = AgentKeywordPar
         dateTime = "10:00",
         placeName = "Sala 1",
         tags = listOf("movilidad", "salud"),
-        placePhotoUrl = null
+        placePhotoUrl = ""
       ),
       ActivityItem(
         id = "a2",
@@ -65,7 +65,7 @@ class AgentOrchestrator(private val parser: AgentKeywordParser = AgentKeywordPar
         dateTime = "12:00",
         placeName = "Parque",
         tags = listOf("cardio", "social"),
-        placePhotoUrl = null
+        placePhotoUrl = ""
       ),
       ActivityItem(
         id = "a3",
@@ -73,7 +73,7 @@ class AgentOrchestrator(private val parser: AgentKeywordParser = AgentKeywordPar
         dateTime = "17:30",
         placeName = "Sala 2",
         tags = listOf("flexibilidad"),
-        placePhotoUrl = null
+        placePhotoUrl = ""
       )
     )
   }

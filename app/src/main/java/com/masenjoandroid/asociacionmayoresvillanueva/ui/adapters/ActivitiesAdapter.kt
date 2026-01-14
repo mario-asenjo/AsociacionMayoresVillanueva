@@ -8,8 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.masenjoandroid.asociacionmayoresvillanueva.app.databinding.ItemActivityBinding
 import com.masenjoandroid.asociacionmayoresvillanueva.domain.model.ActivityItem
 
-class ActivitiesAdapter(private val onClick: (ActivityItem) -> Unit = {}) :
+class ActivitiesAdapter :
   ListAdapter<ActivityItem, ActivitiesAdapter.VH>(DIFF) {
+
+  private var onItemClick: ((ActivityItem) -> Unit)? = null
+
+  fun setOnItemClickListener(listener: (ActivityItem) -> Unit) {
+    onItemClick = listener
+  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
     val binding = ItemActivityBinding.inflate(
@@ -17,25 +23,25 @@ class ActivitiesAdapter(private val onClick: (ActivityItem) -> Unit = {}) :
       parent,
       false
     )
-    return VH(binding, onClick)
+    return VH(binding)
   }
 
   override fun onBindViewHolder(holder: VH, position: Int) {
     holder.bind(getItem(position))
   }
 
-  class VH(private val binding: ItemActivityBinding, private val onClick: (ActivityItem) -> Unit) :
-    RecyclerView.ViewHolder(binding.root) {
+  inner class VH(
+    private val binding: ItemActivityBinding
+  ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: ActivityItem) {
       binding.title.text = item.title
       binding.subtitle.text = "${item.dateTime} · ${item.placeName}"
       binding.tags.text = item.tags.joinToString(" ") { "#$it" }
 
-      binding.cardRoot.contentDescription =
-        "Actividad ${item.title}. ${item.dateTime}. Lugar ${item.placeName}."
-
-      binding.root.setOnClickListener { onClick(item) }
+      binding.root.setOnClickListener {
+        onItemClick?.invoke(item)
+      }
     }
   }
 

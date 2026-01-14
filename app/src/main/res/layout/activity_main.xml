@@ -8,103 +8,120 @@
   android:padding="@dimen/screen_padding"
   android:background="?android:attr/windowBackground">
 
-    <TextView
-        android:id="@+id/titleText"
-        android:layout_width="0dp"
-        android:textColor="?android:attr/colorBackground"
-        android:layout_height="wrap_content"
-        android:text="@string/title_main"
-        android:textSize="@dimen/text_title"
-        android:textStyle="bold"
-        android:importantForAccessibility="yes"
-        android:contentDescription="@string/title_main"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+  <!-- PERFIL -->
+  <ImageView
+    android:id="@+id/profileImage"
+    android:layout_width="56dp"
+    android:layout_height="56dp"
+    android:src="@drawable/ic_profile_placeholder"
+    android:contentDescription="@string/cd_profile_image"
+    android:focusable="true"
+    android:clickable="true"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/queryInputLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/hint_query"
-        app:layout_constraintTop_toBottomOf="@id/titleText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/space_m">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/queryEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:imeOptions="actionSend"
-            android:textSize="@dimen/text_body"
-            android:contentDescription="@string/cd_query_input" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/sendButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/action_send"
-        android:textSize="@dimen/text_button"
-        android:contentDescription="@string/cd_send"
-        app:layout_constraintTop_toBottomOf="@id/queryInputLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/speakButton"
-        app:layout_constraintHorizontal_weight="1"
-        android:layout_marginTop="@dimen/space_s"
-        android:layout_marginEnd="@dimen/space_s" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/speakButton"
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/action_speak"
-        android:textSize="@dimen/text_button"
-        android:contentDescription="@string/cd_speak"
-        app:icon="@drawable/ic_mic"
-        app:iconGravity="textStart"
-        app:layout_constraintTop_toTopOf="@id/sendButton"
-        app:layout_constraintBottom_toBottomOf="@id/sendButton"
-        app:layout_constraintStart_toEndOf="@id/sendButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="1" />
-
-    <TextView
-        android:id="@+id/statusText"
-        android:layout_width="0dp"
-        android:textColor="?android:attr/colorBackground"
-        android:layout_height="wrap_content"
-        android:text="@string/status_ready"
-        android:textSize="@dimen/text_body"
-        android:importantForAccessibility="yes"
-        android:layout_marginTop="@dimen/space_m"
-        app:layout_constraintTop_toBottomOf="@id/sendButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/resultsRecycler"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:contentDescription="@string/cd_results_list"
-        app:layout_constraintTop_toBottomOf="@id/statusText"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/space_m" />
-    <ProgressBar
-    android:id="@+id/loading"
-    android:layout_width="wrap_content"
+  <!-- TÍTULO -->
+  <TextView
+    android:id="@+id/titleText"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
+    android:text="@string/title_main"
+    android:textSize="@dimen/text_title"
+    android:textStyle="bold"
+    android:textColor="?android:attr/colorBackground"
+    app:layout_constraintStart_toEndOf="@id/profileImage"
+    app:layout_constraintTop_toTopOf="@id/profileImage"
+    app:layout_constraintBottom_toBottomOf="@id/profileImage"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginStart="@dimen/space_m"/>
+
+  <!-- LISTA DE ACTIVIDADES -->
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/resultsRecycler"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:contentDescription="@string/cd_results_list"
+    app:layout_constraintTop_toBottomOf="@id/profileImage"
+    app:layout_constraintBottom_toTopOf="@id/statusText"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="@dimen/space_m"
+    android:layout_marginBottom="@dimen/space_s"/>
+
+  <!-- ESTADO / MENSAJES -->
+  <TextView
+    android:id="@+id/statusText"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="@string/status_ready"
+    android:textSize="@dimen/text_body"
+    android:textColor="?android:attr/colorBackground"
+    android:importantForAccessibility="yes"
+    app:layout_constraintTop_toBottomOf="@id/resultsRecycler"
+    app:layout_constraintBottom_toTopOf="@id/queryInputLayout"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginBottom="@dimen/space_s"/>
+
+  <!-- INPUT -->
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/queryInputLayout"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:hint="@string/hint_query"
+    app:layout_constraintBottom_toTopOf="@id/buttonsRow"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent">
+
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/queryEditText"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:imeOptions="actionSend"
+      android:inputType="text"
+      android:textSize="@dimen/text_body"
+      android:contentDescription="@string/cd_query_input"/>
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <!-- BOTONES -->
+  <LinearLayout
+    android:id="@+id/buttonsRow"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent">
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/sendButton"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:text="@string/action_send"
+      android:contentDescription="@string/cd_send"/>
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/speakButton"
+      style="?attr/materialButtonOutlinedStyle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:text="@string/action_speak"
+      android:contentDescription="@string/cd_speak"
+      app:icon="@drawable/ic_mic"/>
+  </LinearLayout>
+
+  <!-- LOADING -->
+  <ProgressBar
+    android:id="@+id/loading"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
     android:visibility="gone"
     android:contentDescription="@string/cd_loading"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent" />
-
+    app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
