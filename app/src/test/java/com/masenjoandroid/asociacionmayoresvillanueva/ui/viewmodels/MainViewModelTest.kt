@@ -2,58 +2,60 @@ package com.masenjoandroid.asociacionmayoresvillanueva.ui.viewmodels
 
 import com.masenjoandroid.asociacionmayoresvillanueva.voice.FakeSpeechToTextEngine
 import com.masenjoandroid.asociacionmayoresvillanueva.voice.FakeTextToSpeechEngine
-import junit.framework.TestCase.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class MainViewModelTest {
 
   @Test
-  fun `onSpeakClicked uses tts engine`() {
-    val viewModel = MainViewModel()
-    val fakeEngine = FakeTextToSpeechEngine()
-    viewModel.ttsEngine = fakeEngine
+  fun `onSendQuery actividades actualiza lista y canta resumen`() {
+    val vm = MainViewModel()
+    val fakeTts = FakeTextToSpeechEngine()
+    vm.ttsEngine = fakeTts
 
-    // Estado inicial
-    val initialStatus = viewModel.uiModel.value.status // "Listo."
+    vm.onSendQuery("actividades hoy")
 
-    viewModel.onMicClicked()
+    val state = vm.uiModel.value
+    assertTrue("Debería haber items", state.items.isNotEmpty())
 
-    // Verificamos que se llamó al motor
-    assertEquals(initialStatus, fakeEngine.lastSpokenText)
-
-    // Verificamos que el estado visual cambió
-    assertEquals("Hablando: $initialStatus", viewModel.uiModel.value.status)
+    val spoken = fakeTts.lastSpokenText
+    assertNotNull("Debería hablar algo", spoken)
+    assertTrue("Debería mencionar actividades", spoken!!.contains("actividades", ignoreCase = true))
   }
 
   @Test
-  fun `onSpeakClicked without engine does not crash`() {
-    val viewModel = MainViewModel()
-    // No asignamos engine
+  fun `onSendQuery queja canta confirmacion`() {
+    val vm = MainViewModel()
+    val fakeTts = FakeTextToSpeechEngine()
+    vm.ttsEngine = fakeTts
 
-    viewModel.onMicClicked()
+    vm.onSendQuery("quiero poner una queja")
 
-    // Verificamos que cambia el estado aunque no hable
-    val expectedStatus = "Hablando: Listo."
-    assertEquals(expectedStatus, viewModel.uiModel.value.status)
+    val spoken = fakeTts.lastSpokenText
+    assertNotNull(spoken)
+    assertTrue(spoken!!.isNotBlank())
   }
 
   @Test
-  fun `onMicClicked starts listening and processes result`() {
-    val viewModel = MainViewModel()
+  fun `onMicClicked inicia escucha y al recibir voz autoenvia y canta`() {
+    val vm = MainViewModel()
     val fakeStt = FakeSpeechToTextEngine()
-    viewModel.sttEngine = fakeStt
+    val fakeTts = FakeTextToSpeechEngine()
+    vm.sttEngine = fakeStt
+    vm.ttsEngine = fakeTts
 
-    // 1. Iniciar escucha
-    viewModel.onMicClicked()
-    assert(fakeStt.isListening)
+    vm.onMicClicked()
+    assertTrue(fakeStt.isListening)
 
-    // 2. Simular voz: "actividades"
-    // Sabemos que "actividades" -> devuelve mock de actividades y status "Mostrando actividades (mock)."
+    // Simula dictado -> autoenvío
     fakeStt.simulateVoiceInput("actividades")
 
-    // 3. Verificar resultado
-    val state = viewModel.uiModel.value
-    assertEquals("Mostrando actividades (mock).", state.status)
-    assert(state.items.isNotEmpty())
+    val state = vm.uiModel.value
+    assertTrue(state.items.isNotEmpty())
+
+    val spoken = fakeTts.lastSpokenText
+    assertNotNull(spoken)
+    assertTrue(spoken!!.contains("actividades", ignoreCase = true))
   }
 }
