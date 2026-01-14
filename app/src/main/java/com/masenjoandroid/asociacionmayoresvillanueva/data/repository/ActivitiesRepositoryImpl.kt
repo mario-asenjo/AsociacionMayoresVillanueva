@@ -10,7 +10,7 @@ class ActivitiesRepositoryImpl(private val dataSource: FirebaseActivitiesDataSou
 
   override suspend fun getActivitiesForToday(): AppResult<List<ActivityItem>> = try {
     // Placeholder: cuando se implemente, mapear documentos reales.
-    dataSource.fetchToday()
+    // dataSource.fetchToday()       TODO: Reimplementar
     AppResult.Success(emptyList())
   } catch (t: Throwable) {
     AppResult.Error("Error obteniendo actividades", t)
