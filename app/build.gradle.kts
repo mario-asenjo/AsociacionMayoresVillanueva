@@ -1,33 +1,23 @@
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
-}
-
-// Firebase: aplicar google-services SOLO si existe el archivo.
-// Esto permite que el repo compile/CI pase sin google-services.json.
-if (file("google-services.json").exists()) {
-  apply(plugin = "com.google.gms.google-services")
+  alias(libs.plugins.kotlin.serialization)
+  alias(libs.plugins.ktlint)
+  kotlin("kapt")
 }
 
 android {
-  namespace = "com.masenjoandroid.asociacionmayoresvillanueva"
+  namespace = "com.masenjoandroid.asociacionmayoresvillanueva.app"
   compileSdk = 36
 
   defaultConfig {
-    applicationId = "com.masenjo_android.asociacionmayoresvillanueva"
+    applicationId = "com.masenjoandroid.asociacionmayoresvillanueva.app"
     minSdk = 26
     targetSdk = 36
     versionCode = 1
-    versionName = "0.1.0"
+    versionName = "1.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    vectorDrawables {
-      useSupportLibrary = true
-    }
-  }
-
-  buildFeatures {
-    viewBinding = true
   }
 
   buildTypes {
@@ -38,9 +28,6 @@ android {
         "proguard-rules.pro"
       )
     }
-    debug {
-      // placeholder
-    }
   }
 
   compileOptions {
@@ -48,40 +35,42 @@ android {
     targetCompatibility = JavaVersion.VERSION_17
   }
 
-  kotlin {
-    compilerOptions {
-      jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
-    }
-  }
+  // El bloque kotlinOptions ya no se usa así; se reemplaza con jvmToolchain
+}
 
-  lint {
-    abortOnError = true
-    warningsAsErrors = false
-  }
+kotlin {
+  // Configura Java 17 como jvmTarget
+  jvmToolchain(17)
 }
 
 dependencies {
+  // Core
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.activity.ktx)
 
+  // Lifecycle
   implementation(libs.androidx.lifecycle.viewmodel.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
 
-  implementation(libs.material)
-  implementation(libs.androidx.constraintlayout)
+  // UI
   implementation(libs.androidx.recyclerview)
+  implementation(libs.androidx.constraintlayout)
+  implementation(libs.material)
 
+  // Coroutines
   implementation(libs.kotlinx.coroutines.android)
 
-  // Firebase (preparado; no se usa aún en código)
-  implementation(platform(libs.firebase.bom))
-  implementation(libs.firebase.auth)
-  implementation(libs.firebase.firestore)
-  implementation(libs.firebase.storage)
+  // Serialization
+  implementation(libs.kotlinx.serialization.json)
 
+  // Room
+  implementation(libs.androidx.room.runtime)
+  implementation(libs.androidx.room.ktx)
+  kapt(libs.androidx.room.compiler)
+
+  // Tests
   testImplementation(libs.junit)
-
   androidTestImplementation(libs.androidx.test.ext.junit)
   androidTestImplementation(libs.androidx.test.espresso.core)
   androidTestImplementation(libs.androidx.test.runner)

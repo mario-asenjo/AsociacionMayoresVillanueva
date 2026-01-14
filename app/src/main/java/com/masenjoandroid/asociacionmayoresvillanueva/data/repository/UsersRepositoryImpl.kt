@@ -1,28 +1,17 @@
 package com.masenjoandroid.asociacionmayoresvillanueva.data.repository
 
-import com.masenjoandroid.asociacionmayoresvillanueva.common.AppResult
+import android.content.Context
 import com.masenjoandroid.asociacionmayoresvillanueva.data.firebase.FirebaseUsersDataSource
-import com.masenjoandroid.asociacionmayoresvillanueva.domain.model.UserProfile
-import com.masenjoandroid.asociacionmayoresvillanueva.domain.repository.UsersRepository
+import com.masenjoandroid.asociacionmayoresvillanueva.domain.model.User
 
-class UsersRepositoryImpl(private val dataSource: FirebaseUsersDataSource) : UsersRepository {
+class UsersRepositoryImpl(context: Context) {
 
-  override suspend fun getUserProfile(userId: String): AppResult<UserProfile> = try {
-    val doc = dataSource.fetchUser(userId)
-    if (doc == null) {
-      AppResult.Error("Usuario no encontrado")
-    } else {
-      // Placeholder de mapeo
-      AppResult.Success(
-        UserProfile(
-          id = userId,
-          displayName = (doc["displayName"] as? String) ?: "Usuario",
-          restrictions = (doc["restrictions"] as? List<String>) ?: emptyList(),
-          xp = (doc["xp"] as? Number)?.toInt() ?: 0
-        )
-      )
-    }
-  } catch (t: Throwable) {
-    AppResult.Error("Error obteniendo perfil", t)
+  private val dataSource = FirebaseUsersDataSource(context)
+
+  suspend fun getUsers(): List<User> {
+    // Solo delega al data source
+    return dataSource.fetchUsers()
   }
+
+  suspend fun getUserById(userId: String): User? = dataSource.fetchUser(userId)
 }
