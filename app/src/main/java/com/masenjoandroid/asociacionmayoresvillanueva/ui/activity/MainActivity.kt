@@ -115,6 +115,12 @@ class MainActivity : AppCompatActivity() {
 
   private fun sendQuery() {
     val text = binding.queryEditText.text?.toString().orEmpty()
+
+    if (text.isBlank()) return
+
     viewModel.onSendQuery(text)
+
+    binding.queryEditText.text?.clear()
+    binding.queryEditText.clearFocus()
   }
 }
