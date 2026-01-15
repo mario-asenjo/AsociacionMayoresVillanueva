@@ -62,9 +62,21 @@
         "uTxjIlmxtBosRv07mWAH": {
           "experiencia": 100,
           "nombre": "",
+          "email": "",
+          "password": "",
+          "restricciones": [
+            ""
+          ],
+          "actividades:": [
+            ""
+          ],
+          "quejas": [
+            ""
+          ],
           "rol": [
             ""
           ],
+
           "__collections__": {}
         }
       }
