@@ -22,12 +22,14 @@ class MainViewModel : ViewModel() {
     data class OpenComplete(val id: String, val title: String) : MainUiEvent()
   }
 
+  private var pendingOpenReference: String? = null
+
   private val orchestrator = AgentOrchestrator()
 
   var ttsEngine: TextToSpeechEngine? = null
   var sttEngine: SpeechToTextEngine? = null
 
-  private val _events = MutableSharedFlow<MainUiEvent>(replay = 1, extraBufferCapacity = 1)
+  private val _events = MutableSharedFlow<MainUiEvent>(replay = 0, extraBufferCapacity = 1)
   val events: SharedFlow<MainUiEvent> = _events.asSharedFlow()
 
   private val _uiModel = MutableStateFlow(MainUiModel())
@@ -39,15 +41,23 @@ class MainViewModel : ViewModel() {
     when (response) {
       is AgentResponse.ShowActivities -> {
         val list = response.list
-        _uiModel.value = _uiModel.value.copy(
-          items = list,
-          status = if (list.isEmpty()) {
-            "No hay actividades para mostrar."
-          } else {
-            "Mostrando ${list.size} actividades."
-          }
-        )
+        _uiModel.value =
+          _uiModel.value.copy(
+            items = list,
+            status =
+            if (list.isEmpty()) {
+              "No hay actividades para mostrar."
+            } else {
+              "Mostrando ${list.size} actividades."
+            }
+          )
         speakActivities(list)
+
+        // ✅ Si había un "abre la segunda" pendiente, lo ejecutamos ahora
+        pendingOpenReference?.let { ref ->
+          pendingOpenReference = null
+          handleOpenActivity(ref)
+        }
       }
 
       is AgentResponse.ShowMessage -> {
@@ -74,7 +84,35 @@ class MainViewModel : ViewModel() {
       is AgentResponse.RequestComplete -> {
         handleCompleteRequest(response.activityReference)
       }
+
+      // ✅ NUEVO: abrir una actividad por ordinal (abrir = ir a inscripción por ahora)
+      is AgentResponse.OpenActivity -> {
+        val ref = response.activityReference
+        if (ref.isNullOrBlank()) {
+          val msg = "¿Cuál quieres abrir? Di “abre la primera” o “abre la segunda”."
+          _uiModel.value = _uiModel.value.copy(status = msg)
+          speak(msg)
+          return
+        }
+
+        // Si aún no hay lista cargada, pedimos actividades hoy y luego abrimos
+        if (_uiModel.value.items.isEmpty()) {
+          pendingOpenReference = ref
+          val msg = "Vale. Primero te muestro las actividades de hoy."
+          _uiModel.value = _uiModel.value.copy(status = msg)
+          speak(msg)
+          onSendQuery("actividades hoy")
+          return
+        }
+
+        handleOpenActivity(ref)
+      }
     }
+  }
+
+  private fun handleOpenActivity(reference: String) {
+    // “Abrir” lo tratamos como “abrir inscripción” (puedes cambiarlo a pantalla detalle si haces una)
+    handleEnrollRequest(reference)
   }
 
   fun onMicClicked() {

@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
               val intent = Intent(this@MainActivity, CompleteActivityActivity::class.java).apply {
                 putExtra(CompleteActivityActivity.EXTRA_ACTIVITY_ID, event.id)
                 putExtra(CompleteActivityActivity.EXTRA_ACTIVITY_TITLE, event.title)
-                putExtra(CompleteActivityActivity.EXTRA_USER_ID, "uTxjIlmxtBosRv07mWAH")
+                putExtra(CompleteActivityActivity.EXTRA_USER_ID, userId)
               }
               startActivity(intent)
             }
@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
       val intent = Intent(this, EnrollActivity::class.java).apply {
         putExtra(EnrollActivity.EXTRA_ACTIVITY_ID, item.id)
         putExtra(EnrollActivity.EXTRA_ACTIVITY_TITLE, item.title)
-        putExtra(EnrollActivity.EXTRA_USER_ID, "uTxjIlmxtBosRv07mWAH")
+        putExtra(EnrollActivity.EXTRA_USER_ID, userId)
       }
       startActivity(intent)
     }

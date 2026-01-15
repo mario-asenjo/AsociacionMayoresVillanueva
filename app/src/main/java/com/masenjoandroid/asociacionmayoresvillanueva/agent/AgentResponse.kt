@@ -9,4 +9,5 @@ sealed class AgentResponse {
   data class AskForFields(val fieldsNeeded: List<String>) : AgentResponse()
   data class RequestEnroll(val activityReference: String?) : AgentResponse()
   data class RequestComplete(val activityReference: String?) : AgentResponse()
+  data class OpenActivity(val activityReference: String?) : AgentResponse()
 }
