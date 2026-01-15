@@ -1,6 +1,5 @@
 package com.masenjoandroid.asociacionmayoresvillanueva.ui.activity
 
-import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -15,7 +14,6 @@ import com.masenjoandroid.asociacionmayoresvillanueva.app.R
 
 // IMPORTANTE: Asegúrate de que este import sea el correcto.
 // Si te sale en rojo, bórralo y deja que Android Studio te sugiera importar "tu.paquete.R"
-
 
 class ProfileDialogFragment : DialogFragment() {
 

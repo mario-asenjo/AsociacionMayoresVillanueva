@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.masenjoandroid.asociacionmayoresvillanueva.app.databinding.ItemFeedbackBinding
 import com.masenjoandroid.asociacionmayoresvillanueva.domain.model.FeedbackItem
 
-class MonitorAdapter(
-  private val onReviewClick: (FeedbackItem) -> Unit
-) : ListAdapter<FeedbackItem, MonitorAdapter.FeedbackViewHolder>(DiffCallback) {
+class MonitorAdapter(private val onReviewClick: (FeedbackItem) -> Unit) :
+  ListAdapter<FeedbackItem, MonitorAdapter.FeedbackViewHolder>(DiffCallback) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedbackViewHolder {
     val binding = ItemFeedbackBinding.inflate(
-      LayoutInflater.from(parent.context), parent, false
+      LayoutInflater.from(parent.context),
+      parent,
+      false
     )
     return FeedbackViewHolder(binding, onReviewClick)
   }
@@ -35,7 +36,7 @@ class MonitorAdapter(
       binding.activityName.text = item.activityTitle
 
       // 1. Sentimiento
-      binding.ratingText.text = when(item.feelingRating) {
+      binding.ratingText.text = when (item.feelingRating) {
         1 -> "1/5 (Muy mal 😞)"
         2 -> "2/5 (Mal 😕)"
         3 -> "3/5 (Regular 😐)"
@@ -83,7 +84,9 @@ class MonitorAdapter(
   }
 
   companion object DiffCallback : DiffUtil.ItemCallback<FeedbackItem>() {
-    override fun areItemsTheSame(oldItem: FeedbackItem, newItem: FeedbackItem) = oldItem.id == newItem.id
-    override fun areContentsTheSame(oldItem: FeedbackItem, newItem: FeedbackItem) = oldItem == newItem
+    override fun areItemsTheSame(oldItem: FeedbackItem, newItem: FeedbackItem) =
+      oldItem.id == newItem.id
+    override fun areContentsTheSame(oldItem: FeedbackItem, newItem: FeedbackItem) =
+      oldItem == newItem
   }
 }
