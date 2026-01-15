@@ -42,11 +42,11 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    // Inicializamos TTS y STT
+    // Inicializar TTS y STT
     ttsManager = TextToSpeechManager(this)
     sttManager = SpeechToTextManager(this)
 
-    // Inyectamos en ViewModel
+    // Inyectar en ViewModel
     viewModel.ttsEngine = ttsManager
     viewModel.sttEngine = sttManager
 
@@ -55,7 +55,9 @@ class MainActivity : AppCompatActivity() {
 
     setupUi()
     observeState()
-    binding.statusText.text = "Pantalla Cargada!"
+
+    // Mensaje inicial de depuración
+    binding.statusText.text = "Pantalla Cargada Correctamente"
   }
 
   override fun onDestroy() {
@@ -68,7 +70,7 @@ class MainActivity : AppCompatActivity() {
     binding.resultsRecycler.layoutManager = LinearLayoutManager(this)
     binding.resultsRecycler.adapter = adapter
 
-    // Se asume que existe loading en el layout
+    // Setup inicial del loading
     binding.loading.visibility = View.GONE
 
     binding.sendButton.setOnClickListener { sendQuery() }
@@ -89,9 +91,16 @@ class MainActivity : AppCompatActivity() {
       startActivity(intent)
     }
 
-    binding.profileImage.setOnClickListener {
-      Toast.makeText(this, "Perfil (pendiente)", Toast.LENGTH_SHORT).show()
+    // --- LÓGICA DE PERFIL NUEVA ---
+    // Al hacer clic en el contenedor o la tarjeta de la foto
+    binding.profileImageCard.setOnClickListener {
+      // Abrimos el modal
+      val dialog = ProfileDialogFragment()
+      dialog.show(supportFragmentManager, "ProfileDialog")
     }
+
+    // Simulación: Seteamos la barra de XP al 75%
+    binding.xpProgressBar.progress = 75
   }
 
   private fun checkAudioPermissionAndListen() {
