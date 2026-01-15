@@ -17,5 +17,11 @@ data class User(
   val id: String,
   val nombre: String? = null,
   val experiencia: Int? = null,
-  val rol: List<String>? = null
+  val rol: List<String>? = null,
+  val email: String? = null,
+  val password: String? = null,
+  val restricciones: List<String>? = null,
+  val quejas: List<String>? = null,
+  val actividades: List<String>? = null
+
 )
