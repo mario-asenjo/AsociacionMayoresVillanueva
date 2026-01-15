@@ -42,11 +42,11 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    // Inicializamos TTS y STT
+    // Inicializar TTS y STT
     ttsManager = TextToSpeechManager(this)
     sttManager = SpeechToTextManager(this)
 
-    // Inyectamos en ViewModel
+    // Inyectar en ViewModel
     viewModel.ttsEngine = ttsManager
     viewModel.sttEngine = sttManager
 
@@ -55,7 +55,9 @@ class MainActivity : AppCompatActivity() {
 
     setupUi()
     observeState()
-    binding.statusText.text = "Pantalla Cargada!"
+
+    // Mensaje inicial de depuración
+    binding.statusText.text = "Pantalla Cargada Correctamente"
   }
 
   override fun onDestroy() {
@@ -68,9 +70,10 @@ class MainActivity : AppCompatActivity() {
     binding.resultsRecycler.layoutManager = LinearLayoutManager(this)
     binding.resultsRecycler.adapter = adapter
 
-    // Se asume que existe loading en el layout
+    // Setup inicial del loading
     binding.loading.visibility = View.GONE
 
+    // Listeners básicos
     binding.sendButton.setOnClickListener { sendQuery() }
     binding.speakButton.setOnClickListener { checkAudioPermissionAndListen() }
 
@@ -83,15 +86,22 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
+    // Navegación a detalle
     adapter.setOnItemClickListener { item ->
       val intent = Intent(this, EnrollActivity::class.java)
       intent.putExtra(EnrollActivity.EXTRA_ACTIVITY_TITLE, item.title)
       startActivity(intent)
     }
 
-    binding.profileImage.setOnClickListener {
-      Toast.makeText(this, "Perfil (pendiente)", Toast.LENGTH_SHORT).show()
+    // --- LÓGICA DE PERFIL (NUESTRA) ---
+    // 1. Al hacer clic en la tarjeta de la foto
+    binding.profileImageCard.setOnClickListener {
+      val dialog = ProfileDialogFragment()
+      dialog.show(supportFragmentManager, "ProfileDialog")
     }
+
+    // 2. Simulación de XP (Barra lineal)
+    binding.xpProgressBar.progress = 75
   }
 
   private fun checkAudioPermissionAndListen() {
@@ -116,10 +126,12 @@ class MainActivity : AppCompatActivity() {
   private fun sendQuery() {
     val text = binding.queryEditText.text?.toString().orEmpty()
 
+    // Validación añadida tras el fetch
     if (text.isBlank()) return
 
     viewModel.onSendQuery(text)
 
+    // Limpieza añadida tras el fetch (Limpia el input y quita el foco)
     binding.queryEditText.text?.clear()
     binding.queryEditText.clearFocus()
   }

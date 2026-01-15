@@ -24,16 +24,20 @@
     <activity
       android:name="com.masenjoandroid.asociacionmayoresvillanueva.ui.activity.MainActivity"
       android:exported="true"
-      android:label="@string/app_name">
-
+      android:label="@string/app_name"
+      android:windowSoftInputMode="adjustResize">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
-
     </activity>
 
-    <activity android:name="com.masenjoandroid.asociacionmayoresvillanueva.ui.activity.EnrollActivity" />
+    <activity android:name="com.masenjoandroid.asociacionmayoresvillanueva.ui.activity.EnrollActivity"/>
+
+    <activity
+      android:name="com.masenjoandroid.asociacionmayoresvillanueva.ui.activity.MonitorDashboardActivity"
+      android:label="Monitor Dashboard"
+      android:parentActivityName="com.masenjoandroid.asociacionmayoresvillanueva.ui.activity.MainActivity"/>
 
   </application>
 </manifest>
