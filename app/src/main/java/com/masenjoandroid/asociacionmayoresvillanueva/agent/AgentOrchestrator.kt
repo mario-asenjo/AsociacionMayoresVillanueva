@@ -43,6 +43,10 @@ class AgentOrchestrator(private val parser: AgentKeywordParser = AgentKeywordPar
           AgentResponse.ShowMessage("No he entendido: prueba con “actividades hoy/mañana”.")
         }
       }
+
+      is AgentIntent.OpenActivity -> {
+        AgentResponse.OpenActivity(intent.activityReference)
+      }
     }
   }
 

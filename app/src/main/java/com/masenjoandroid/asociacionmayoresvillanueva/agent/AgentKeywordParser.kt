@@ -17,6 +17,32 @@ class AgentKeywordParser {
 
     val text = normalize(original)
 
+    // 0) Acciones que deben ganar a "actividades"
+    // Completar
+    if (containsAny(text, "complet", "termin", "he hecho", "he realizad")) {
+      return AgentIntent.CompleteActivity(activityReference = extractActivityReference(text))
+    }
+
+    // Apuntarse
+    if (containsAny(text, "apunt", "inscrib", "registr", "alta")) {
+      return AgentIntent.RegisterToActivity(activityReference = extractActivityReference(text))
+    }
+
+    // Desapuntarse
+    if (containsAny(text, "desapunt", "baja", "cancel", "anular")) {
+      return AgentIntent.UnregisterFromActivity(activityReference = extractActivityReference(text))
+    }
+
+    // Abrir/ver/mostrar una actividad concreta (por ordinal o número)
+    if (containsAny(
+        text, "abre", "abrir", "ver", "mostrar", "elige",
+        "selecciona", "segunda", "primera", "tercera", "cuarta", "quinta"
+      )
+    ) {
+      val ref = extractActivityReference(text)
+      if (ref != null) return AgentIntent.OpenActivity(activityReference = ref)
+    }
+
     // 1) Actividades (consultar)
     if (containsAny(text, "actividad", "actividades", "rutina", "rutinas")) {
       val scope = when {
@@ -48,26 +74,12 @@ class AgentKeywordParser {
       return AgentIntent.CreateComplaint(rawText = original)
     }
 
-    // 3) Apuntarse / desapuntarse
-    if (containsAny(text, "apunt", "inscrib", "registr", "alta")) {
-      // No extraemos id aún (futuro: NER o UI selection)
-      return AgentIntent.RegisterToActivity(activityReference = extractActivityReference(text))
-    }
-
-    if (containsAny(text, "complet", "termin", "he hecho", "he realizad")) {
-      return AgentIntent.CompleteActivity(activityReference = extractActivityReference(text))
-    }
-
-    if (containsAny(text, "desapunt", "baja", "cancel", "anular")) {
-      return AgentIntent.UnregisterFromActivity(activityReference = extractActivityReference(text))
-    }
-
-    // 4) Correo a monitores
+    // 3) Correo a monitores
     if (containsAny(text, "correo", "email", "e-mail", "monitor", "monitores")) {
       return AgentIntent.ContactMonitor(rawText = original)
     }
 
-    // 5) Recompensas / canje
+    // 4) Recompensas / canje
     if (containsAny(text, "recompensa", "recompensas", "canje", "canjear", "premio", "premios")) {
       return AgentIntent.RedeemRewards(rawText = original)
     }

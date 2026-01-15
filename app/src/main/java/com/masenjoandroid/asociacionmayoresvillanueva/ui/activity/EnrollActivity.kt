@@ -22,6 +22,7 @@ class EnrollActivity : AppCompatActivity() {
     const val EXTRA_USER_ID = "extra_user_id"
   }
 
+  private var isFinishingFlow = false
   private lateinit var binding: ActivityEnrollBinding
   private lateinit var tts: TextToSpeechManager
   private lateinit var stt: SpeechToTextManager
@@ -95,20 +96,37 @@ class EnrollActivity : AppCompatActivity() {
     val n = text.lowercase()
     when {
       n.contains("confirm") || n.contains("sí") || n.contains("si") -> confirmEnroll()
-      n.contains("cancel") || n.contains("no") -> finish()
+      n.contains("cancel") || n.contains("no") -> {
+        stt.stopListening()
+        setResult(RESULT_CANCELED)
+        finish()
+      }
       else -> tts.speak("No te he entendido. Di confirmar o cancelar.") { startHandsFree() }
     }
   }
 
   private fun confirmEnroll() {
+    if (isFinishingFlow) return
+    isFinishingFlow = true
+
     if (activityId.isBlank()) {
+      isFinishingFlow = false
       tts.speak("Falta el identificador de la actividad. No puedo inscribirte.")
       return
     }
 
+    // Detenemos escucha para que no re-dispare nada
+    stt.stopListening()
+
     lifecycleScope.launch {
       enrollmentRepo.enroll(userId, activityId)
-      tts.speak("Inscripción confirmada.") { finish() }
+
+      // No bloquees el finish esperando callbacks de TTS
+      tts.speak("Inscripción confirmada.")
+
+      // Devuelve OK por si quieres refrescar en Main
+      setResult(RESULT_OK)
+      finish()
     }
   }
 }

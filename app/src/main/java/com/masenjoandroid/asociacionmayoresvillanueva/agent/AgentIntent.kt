@@ -16,6 +16,7 @@ sealed interface AgentIntent {
 
   data class Unknown(val rawText: String) : AgentIntent
   data class CompleteActivity(val activityReference: String?) : AgentIntent
+  data class OpenActivity(val activityReference: String?) : AgentIntent
 }
 
 enum class ActivitiesScope {
