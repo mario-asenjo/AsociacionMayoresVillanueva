@@ -5,6 +5,9 @@ import com.masenjoandroid.asociacionmayoresvillanueva.voice.FakeTextToSpeechEngi
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
 
 class MainViewModelTest {
 
@@ -57,5 +60,18 @@ class MainViewModelTest {
     val spoken = fakeTts.lastSpokenText
     assertNotNull(spoken)
     assertTrue(spoken!!.contains("actividades", ignoreCase = true))
+  }
+
+  @Test
+  fun `apuntarme a la segunda emite evento OpenEnroll`() = runBlocking {
+    val vm = MainViewModel()
+    vm.onSendQuery("actividades hoy") // carga lista mock
+    vm.onSendQuery("apuntame a la segunda")
+
+    val event = vm.events.first()
+    val open = event as MainViewModel.MainUiEvent.OpenEnroll
+
+    // segunda del mock: a2
+    assertEquals("a2", open.id)
   }
 }

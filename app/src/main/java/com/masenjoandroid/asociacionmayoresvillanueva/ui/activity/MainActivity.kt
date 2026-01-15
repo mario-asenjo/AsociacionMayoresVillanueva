@@ -11,6 +11,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.masenjoandroid.asociacionmayoresvillanueva.app.databinding.ActivityMainBinding
@@ -42,11 +44,11 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    // Inicializar TTS y STT
+    // Inicializamos TTS y STT
     ttsManager = TextToSpeechManager(this)
     sttManager = SpeechToTextManager(this)
 
-    // Inyectar en ViewModel
+    // Inyectamos en ViewModel
     viewModel.ttsEngine = ttsManager
     viewModel.sttEngine = sttManager
 
@@ -55,10 +57,38 @@ class MainActivity : AppCompatActivity() {
 
     setupUi()
     observeState()
-
-    // Mensaje inicial de depuración
-    binding.statusText.text = "Pantalla Cargada Correctamente"
+    observeEvents()
+    binding.statusText.text = "Pantalla Cargada!"
   }
+
+  private fun observeEvents() {
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewModel.events.collect { event ->
+          when (event) {
+            is MainViewModel.MainUiEvent.OpenEnroll -> {
+              val intent = Intent(this@MainActivity, EnrollActivity::class.java).apply {
+                putExtra(EnrollActivity.EXTRA_ACTIVITY_ID, event.id)
+                putExtra(EnrollActivity.EXTRA_ACTIVITY_TITLE, event.title)
+                putExtra(EnrollActivity.EXTRA_USER_ID, "uTxjIlmxtBosRv07mWAH")
+              }
+              startActivity(intent)
+            }
+
+            is MainViewModel.MainUiEvent.OpenComplete -> {
+              val intent = Intent(this@MainActivity, CompleteActivityActivity::class.java).apply {
+                putExtra(CompleteActivityActivity.EXTRA_ACTIVITY_ID, event.id)
+                putExtra(CompleteActivityActivity.EXTRA_ACTIVITY_TITLE, event.title)
+                putExtra(CompleteActivityActivity.EXTRA_USER_ID, "uTxjIlmxtBosRv07mWAH")
+              }
+              startActivity(intent)
+            }
+          }
+        }
+      }
+    }
+  }
+
 
   override fun onDestroy() {
     super.onDestroy()
@@ -70,10 +100,9 @@ class MainActivity : AppCompatActivity() {
     binding.resultsRecycler.layoutManager = LinearLayoutManager(this)
     binding.resultsRecycler.adapter = adapter
 
-    // Setup inicial del loading
+    // Se asume que existe loading en el layout
     binding.loading.visibility = View.GONE
 
-    // Listeners básicos
     binding.sendButton.setOnClickListener { sendQuery() }
     binding.speakButton.setOnClickListener { checkAudioPermissionAndListen() }
 
@@ -86,22 +115,18 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
-    // Navegación a detalle
     adapter.setOnItemClickListener { item ->
-      val intent = Intent(this, EnrollActivity::class.java)
-      intent.putExtra(EnrollActivity.EXTRA_ACTIVITY_TITLE, item.title)
+      val intent = Intent(this, EnrollActivity::class.java).apply {
+        putExtra(EnrollActivity.EXTRA_ACTIVITY_ID, item.id)
+        putExtra(EnrollActivity.EXTRA_ACTIVITY_TITLE, item.title)
+        putExtra(EnrollActivity.EXTRA_USER_ID, "uTxjIlmxtBosRv07mWAH")
+      }
       startActivity(intent)
     }
 
-    // --- LÓGICA DE PERFIL (NUESTRA) ---
-    // 1. Al hacer clic en la tarjeta de la foto
-    binding.profileImageCard.setOnClickListener {
-      val dialog = ProfileDialogFragment()
-      dialog.show(supportFragmentManager, "ProfileDialog")
+    binding.profileImage.setOnClickListener {
+      Toast.makeText(this, "Perfil (pendiente)", Toast.LENGTH_SHORT).show()
     }
-
-    // 2. Simulación de XP (Barra lineal)
-    binding.xpProgressBar.progress = 75
   }
 
   private fun checkAudioPermissionAndListen() {
@@ -126,12 +151,10 @@ class MainActivity : AppCompatActivity() {
   private fun sendQuery() {
     val text = binding.queryEditText.text?.toString().orEmpty()
 
-    // Validación añadida tras el fetch
     if (text.isBlank()) return
 
     viewModel.onSendQuery(text)
 
-    // Limpieza añadida tras el fetch (Limpia el input y quita el foco)
     binding.queryEditText.text?.clear()
     binding.queryEditText.clearFocus()
   }
