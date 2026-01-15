@@ -34,5 +34,10 @@
 
     <activity android:name="com.masenjoandroid.asociacionmayoresvillanueva.ui.activity.EnrollActivity"/>
 
+    <activity
+      android:name="com.masenjoandroid.asociacionmayoresvillanueva.ui.activity.MonitorDashboardActivity"
+      android:label="Monitor Dashboard"
+      android:parentActivityName="com.masenjoandroid.asociacionmayoresvillanueva.ui.activity.MainActivity"/>
+
   </application>
 </manifest>
