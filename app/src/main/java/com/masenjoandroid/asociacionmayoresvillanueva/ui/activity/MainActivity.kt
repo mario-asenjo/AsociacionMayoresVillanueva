@@ -12,8 +12,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.masenjoandroid.asociacionmayoresvillanueva.app.databinding.ActivityMainBinding
 import com.masenjoandroid.asociacionmayoresvillanueva.ui.adapters.ActivitiesAdapter
@@ -29,6 +29,10 @@ class MainActivity : AppCompatActivity() {
 
   private lateinit var ttsManager: TextToSpeechManager
   private lateinit var sttManager: SpeechToTextManager
+
+  private val userId: String by lazy {
+    intent.getStringExtra("EXTRA_USER_ID") ?: "uTxjIlmxtBosRv07mWAH"
+  }
 
   private val requestPermissionLauncher =
     registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -70,7 +74,7 @@ class MainActivity : AppCompatActivity() {
               val intent = Intent(this@MainActivity, EnrollActivity::class.java).apply {
                 putExtra(EnrollActivity.EXTRA_ACTIVITY_ID, event.id)
                 putExtra(EnrollActivity.EXTRA_ACTIVITY_TITLE, event.title)
-                putExtra(EnrollActivity.EXTRA_USER_ID, "uTxjIlmxtBosRv07mWAH")
+                putExtra(EnrollActivity.EXTRA_USER_ID, userId)
               }
               startActivity(intent)
             }
@@ -88,7 +92,6 @@ class MainActivity : AppCompatActivity() {
       }
     }
   }
-
 
   override fun onDestroy() {
     super.onDestroy()

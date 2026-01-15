@@ -22,14 +22,13 @@ class CompletionRepositoryImpl(private val dao: CompletionRequestDao) : Completi
     dao.insert(entity)
   }
 
-  override suspend fun getPendingForMonitor(): List<CompletionRequest> =
-    dao.getPending().map {
-      CompletionRequest(
-        id = it.id,
-        activityId = it.activityId,
-        userId = it.userId,
-        durationMinutes = 0,
-        status = it.status
-      )
-    }
+  override suspend fun getPendingForMonitor(): List<CompletionRequest> = dao.getPending().map {
+    CompletionRequest(
+      id = it.id,
+      activityId = it.activityId,
+      userId = it.userId,
+      durationMinutes = 0,
+      status = it.status
+    )
+  }
 }

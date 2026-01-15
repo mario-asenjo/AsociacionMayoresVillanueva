@@ -13,4 +13,7 @@ interface CompletionRequestDao {
 
   @Query("SELECT * FROM completion_requests WHERE userId = :userId ORDER BY createdAt DESC")
   suspend fun getByUser(userId: String): List<CompletionRequestEntity>
+
+  @Query("SELECT * FROM completion_requests WHERE status = 'PENDING' ORDER BY createdAt DESC")
+  suspend fun getPending(): List<CompletionRequestEntity>
 }

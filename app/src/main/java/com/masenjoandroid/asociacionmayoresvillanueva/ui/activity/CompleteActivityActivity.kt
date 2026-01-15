@@ -2,6 +2,7 @@ package com.masenjoandroid.asociacionmayoresvillanueva.ui.activity
 
 import android.net.Uri
 import android.os.Bundle
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -10,8 +11,8 @@ import com.masenjoandroid.asociacionmayoresvillanueva.data.local.AppDatabase
 import com.masenjoandroid.asociacionmayoresvillanueva.data.local.CompletionRequestEntity
 import com.masenjoandroid.asociacionmayoresvillanueva.voice.SpeechToTextManager
 import com.masenjoandroid.asociacionmayoresvillanueva.voice.TextToSpeechManager
-import kotlinx.coroutines.launch
 import java.util.UUID
+import kotlinx.coroutines.launch
 
 class CompleteActivityActivity : AppCompatActivity() {
 
@@ -112,7 +113,9 @@ class CompleteActivityActivity : AppCompatActivity() {
 
   private fun askMedia() {
     binding.status.text = "Paso 3/3: Multimedia"
-    tts.speak("¿Quieres añadir una foto o vídeo para que tu monitor revise? Voy a abrir la galería.") {
+    tts.speak(
+      "¿Quieres añadir una foto o vídeo para que tu monitor revise? Voy a abrir la galería."
+    ) {
       openPicker()
     }
   }
@@ -121,7 +124,7 @@ class CompleteActivityActivity : AppCompatActivity() {
     // Photo Picker moderno
     try {
       pickMedia.launch(
-        ActivityResultContracts.PickVisualMedia.Request(
+        PickVisualMediaRequest(
           ActivityResultContracts.PickVisualMedia.ImageAndVideo
         )
       )

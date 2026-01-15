@@ -20,7 +20,9 @@ class TextToSpeechManager(context: Context) :
   private var tts: TextToSpeech? = null
 
   @Volatile private var isInitialized: Boolean = false
+
   @Volatile private var pendingText: String? = null
+
   @Volatile private var pendingOnDone: (() -> Unit)? = null
 
   private val onDoneCallbacks = ConcurrentHashMap<String, () -> Unit>()
@@ -60,7 +62,9 @@ class TextToSpeechManager(context: Context) :
 
     val locale = Locale.forLanguageTag("es-ES")
     val langResult = engine.setLanguage(locale)
-    if (langResult == TextToSpeech.LANG_MISSING_DATA || langResult == TextToSpeech.LANG_NOT_SUPPORTED) {
+    if (langResult == TextToSpeech.LANG_MISSING_DATA ||
+      langResult == TextToSpeech.LANG_NOT_SUPPORTED
+    ) {
       Log.e(TAG, "Idioma es-ES no soportado, usando Locale.getDefault()")
       engine.language = Locale.getDefault()
     }

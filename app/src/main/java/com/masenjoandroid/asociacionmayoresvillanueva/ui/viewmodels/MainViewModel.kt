@@ -13,10 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-data class MainUiModel(
-  val items: List<ActivityItem> = emptyList(),
-  val status: String = "Listo."
-)
+data class MainUiModel(val items: List<ActivityItem> = emptyList(), val status: String = "Listo.")
 
 class MainViewModel : ViewModel() {
 
@@ -44,7 +41,11 @@ class MainViewModel : ViewModel() {
         val list = response.list
         _uiModel.value = _uiModel.value.copy(
           items = list,
-          status = if (list.isEmpty()) "No hay actividades para mostrar." else "Mostrando ${list.size} actividades."
+          status = if (list.isEmpty()) {
+            "No hay actividades para mostrar."
+          } else {
+            "Mostrando ${list.size} actividades."
+          }
         )
         speakActivities(list)
       }
@@ -111,7 +112,8 @@ class MainViewModel : ViewModel() {
 
     val item = items.getOrNull(idx)
     if (item == null) {
-      val msg = "No existe la actividad número ${idx + 1}. Prueba con un número entre 1 y ${items.size}."
+      val msg = "No existe la actividad número ${idx + 1}. " +
+        "Prueba con un número entre 1 y ${items.size}."
       _uiModel.value = _uiModel.value.copy(status = msg)
       speak(msg)
       return
@@ -143,7 +145,8 @@ class MainViewModel : ViewModel() {
 
     val item = items.getOrNull(idx)
     if (item == null) {
-      val msg = "No existe la actividad número ${idx + 1}. Prueba con un número entre 1 y ${items.size}."
+      val msg = "No existe la actividad número ${idx + 1}. " +
+        "Prueba con un número entre 1 y ${items.size}."
       _uiModel.value = _uiModel.value.copy(status = msg)
       speak(msg)
       return

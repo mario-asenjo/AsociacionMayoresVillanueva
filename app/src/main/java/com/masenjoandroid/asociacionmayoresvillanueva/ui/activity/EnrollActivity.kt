@@ -27,9 +27,14 @@ class EnrollActivity : AppCompatActivity() {
   private lateinit var stt: SpeechToTextManager
   private lateinit var enrollmentRepo: EnrollmentRepository
 
-  private val userId: String by lazy { intent.getStringExtra(EXTRA_USER_ID) ?: "uTxjIlmxtBosRv07mWAH" }
+  private val userId: String by lazy {
+    intent.getStringExtra(EXTRA_USER_ID)
+      ?: "uTxjIlmxtBosRv07mWAH"
+  }
   private val activityId: String by lazy { intent.getStringExtra(EXTRA_ACTIVITY_ID).orEmpty() }
-  private val activityTitle: String by lazy { intent.getStringExtra(EXTRA_ACTIVITY_TITLE).orEmpty() }
+  private val activityTitle: String by lazy {
+    intent.getStringExtra(EXTRA_ACTIVITY_TITLE).orEmpty()
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -66,8 +71,12 @@ class EnrollActivity : AppCompatActivity() {
   }
 
   private fun startHandsFree() {
-    if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-      tts.speak("Necesito permiso de micrófono para inscribirte por voz. Puedes pulsar el botón confirmar.")
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) !=
+      PackageManager.PERMISSION_GRANTED
+    ) {
+      tts.speak(
+        "Necesito permiso de micrófono para inscribirte por voz. Puedes pulsar el botón confirmar."
+      )
       return
     }
 

@@ -1,29 +1,24 @@
 package com.masenjoandroid.asociacionmayoresvillanueva.data.repository
 
 import android.content.Context
-import com.masenjoandroid.asociacionmayoresvillanueva.data.firebase.FirebaseUsersDataSource
-import com.masenjoandroid.asociacionmayoresvillanueva.data.mapper.toUserProfile
 import com.masenjoandroid.asociacionmayoresvillanueva.domain.model.UserProfile
 import java.util.UUID
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class UsersRepositoryImpl(context: Context) {
 
-  private val dataSource = FirebaseUsersDataSource(context)
+  private val appContext = context.applicationContext
 
-  // Usuarios registrados en tiempo de ejecución (simulación)
-  private val registeredUsers = mutableListOf<UserProfile>()
+  private val prefs = appContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
 
-  // =====================
-  // DATOS ORIGINALES (JSON)
-  // =====================
+  private val json = Json {
+    ignoreUnknownKeys = true
+    encodeDefaults = true
+  }
 
-  suspend fun getUsers(): List<UserProfile> = dataSource.fetchUsers().map { it.toUserProfile() }
-
-  suspend fun getUserById(userId: String): UserProfile? = getUsers().find { it.id == userId }
-
-  // =====================
-  // REGISTRO
-  // =====================
+  // ---- API ----
 
   suspend fun registerUser(
     email: String,
@@ -31,14 +26,16 @@ class UsersRepositoryImpl(context: Context) {
     rol: String,
     restricciones: List<String>
   ): Result<Unit> {
-    if (registeredUsers.any { it.email == email }) {
+    val users = loadUsers().toMutableList()
+
+    if (users.any { it.email.equals(email, ignoreCase = true) }) {
       return Result.failure(Exception("Correo ya registrado"))
     }
 
     val user = UserProfile(
       id = UUID.randomUUID().toString(),
       nombre = "",
-      email = email,
+      email = email.trim(),
       password = password,
       rol = rol,
       xp = 0,
@@ -48,16 +45,14 @@ class UsersRepositoryImpl(context: Context) {
       validado = rol != "monitor"
     )
 
-    registeredUsers.add(user)
+    users.add(user)
+    saveUsers(users)
     return Result.success(Unit)
   }
 
-  // =====================
-  // LOGIN
-  // =====================
-
   suspend fun login(email: String, password: String): Result<UserProfile> {
-    val user = registeredUsers.find { it.email == email }
+    val users = loadUsers()
+    val user = users.find { it.email.equals(email.trim(), ignoreCase = true) }
       ?: return Result.failure(Exception("Usuario no registrado"))
 
     if (user.password != password) {
@@ -68,18 +63,43 @@ class UsersRepositoryImpl(context: Context) {
       return Result.failure(Exception("Monitor pendiente de validación"))
     }
 
+    // Guardamos sesión
+    saveSession(user)
     return Result.success(user)
   }
 
-  // =====================
-  // VALIDACIÓN DE MONITOR
-  // =====================
+  fun getSessionUserId(): String? = prefs.getString(KEY_SESSION_USER_ID, null)
+  fun clearSession() {
+    prefs.edit()
+      .remove(KEY_SESSION_USER_ID)
+      .remove(KEY_SESSION_ROLE)
+      .apply()
+  }
 
-  suspend fun validateMonitor(userId: String) {
-    val index = registeredUsers.indexOfFirst { it.id == userId }
-    if (index != -1) {
-      registeredUsers[index] =
-        registeredUsers[index].copy(validado = true)
-    }
+  // ---- storage ----
+
+  private fun loadUsers(): List<UserProfile> {
+    val raw = prefs.getString(KEY_USERS, null) ?: return emptyList()
+    return runCatching { json.decodeFromString<List<UserProfile>>(raw) }
+      .getOrElse { emptyList() }
+  }
+
+  private fun saveUsers(users: List<UserProfile>) {
+    val raw = json.encodeToString(users)
+    prefs.edit().putString(KEY_USERS, raw).apply()
+  }
+
+  private fun saveSession(user: UserProfile) {
+    prefs.edit()
+      .putString(KEY_SESSION_USER_ID, user.id)
+      .putString(KEY_SESSION_ROLE, user.rol)
+      .apply()
+  }
+
+  companion object {
+    private const val PREFS = "users_repo_prefs"
+    private const val KEY_USERS = "users"
+    private const val KEY_SESSION_USER_ID = "session_user_id"
+    private const val KEY_SESSION_ROLE = "session_role"
   }
 }

@@ -2,12 +2,12 @@ package com.masenjoandroid.asociacionmayoresvillanueva.ui.viewmodels
 
 import com.masenjoandroid.asociacionmayoresvillanueva.voice.FakeSpeechToTextEngine
 import com.masenjoandroid.asociacionmayoresvillanueva.voice.FakeTextToSpeechEngine
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertTrue
-import org.junit.Test
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
+import org.junit.Test
 
 class MainViewModelTest {
 
