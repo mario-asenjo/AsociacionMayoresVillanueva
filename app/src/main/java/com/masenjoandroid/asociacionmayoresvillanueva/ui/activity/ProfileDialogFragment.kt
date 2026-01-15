@@ -13,6 +13,10 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.masenjoandroid.asociacionmayoresvillanueva.app.R
 
+// IMPORTANTE: Asegúrate de que este import sea el correcto.
+// Si te sale en rojo, bórralo y deja que Android Studio te sugiera importar "tu.paquete.R"
+
+
 class ProfileDialogFragment : DialogFragment() {
 
   override fun onCreateView(
@@ -20,25 +24,28 @@ class ProfileDialogFragment : DialogFragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    // Inflamos el layout que hemos modificado con el botón nuevo
+    // Si la app peta aquí, suele ser porque no encuentra R.layout.dialog_profile
     return inflater.inflate(R.layout.dialog_profile, container, false)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    // Listener para el botón de Monitor
-    view.findViewById<View>(R.id.monitorAccessButton).setOnClickListener {
-      // Navegar a la Activity del Monitor
-      val intent = Intent(requireContext(), MonitorDashboardActivity::class.java)
-      startActivity(intent)
-      dismiss() // Cerrar el modal
+    // Configuramos el botón del monitor
+    // Usamos un try-catch por seguridad para evitar que cierre la app si el botón falla
+    try {
+      view.findViewById<View>(R.id.monitorAccessButton)?.setOnClickListener {
+        val intent = Intent(requireContext(), MonitorDashboardActivity::class.java)
+        startActivity(intent)
+        dismiss()
+      }
+    } catch (e: Exception) {
+      e.printStackTrace()
     }
   }
 
   override fun onStart() {
     super.onStart()
-    // Configuración visual del Dialog (Arriba izquierda)
     dialog?.window?.apply {
       setLayout(
         WindowManager.LayoutParams.WRAP_CONTENT,

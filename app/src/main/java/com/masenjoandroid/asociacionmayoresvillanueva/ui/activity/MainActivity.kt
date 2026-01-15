@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
     // Setup inicial del loading
     binding.loading.visibility = View.GONE
 
+    // Listeners básicos
     binding.sendButton.setOnClickListener { sendQuery() }
     binding.speakButton.setOnClickListener { checkAudioPermissionAndListen() }
 
@@ -85,21 +86,21 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
+    // Navegación a detalle
     adapter.setOnItemClickListener { item ->
       val intent = Intent(this, EnrollActivity::class.java)
       intent.putExtra(EnrollActivity.EXTRA_ACTIVITY_TITLE, item.title)
       startActivity(intent)
     }
 
-    // --- LÓGICA DE PERFIL NUEVA ---
-    // Al hacer clic en el contenedor o la tarjeta de la foto
+    // --- LÓGICA DE PERFIL (NUESTRA) ---
+    // 1. Al hacer clic en la tarjeta de la foto
     binding.profileImageCard.setOnClickListener {
-      // Abrimos el modal
       val dialog = ProfileDialogFragment()
       dialog.show(supportFragmentManager, "ProfileDialog")
     }
 
-    // Simulación: Seteamos la barra de XP al 75%
+    // 2. Simulación de XP (Barra lineal)
     binding.xpProgressBar.progress = 75
   }
 
@@ -125,10 +126,12 @@ class MainActivity : AppCompatActivity() {
   private fun sendQuery() {
     val text = binding.queryEditText.text?.toString().orEmpty()
 
+    // Validación añadida tras el fetch
     if (text.isBlank()) return
 
     viewModel.onSendQuery(text)
 
+    // Limpieza añadida tras el fetch (Limpia el input y quita el foco)
     binding.queryEditText.text?.clear()
     binding.queryEditText.clearFocus()
   }
