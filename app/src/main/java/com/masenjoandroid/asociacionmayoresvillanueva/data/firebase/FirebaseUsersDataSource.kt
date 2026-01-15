@@ -23,18 +23,12 @@ class FirebaseUsersDataSource(private val context: Context) {
 
     return usersCollection.map { (docId, docData) ->
       val obj = docData.jsonObject
+
       User(
         id = docId,
         nombre = obj["nombre"]?.jsonPrimitive?.contentOrNull,
         experiencia = obj["experiencia"]?.jsonPrimitive?.intOrNull,
-        rol = obj["rol"]?.jsonArray?.mapNotNull { it.jsonPrimitive.contentOrNull },
-        email = obj["email"]?.jsonPrimitive?.contentOrNull,
-        password = obj["password"]?.jsonPrimitive?.contentOrNull,
-        restricciones = obj["restricciones"]?.jsonArray?.mapNotNull {
-          it.jsonPrimitive.contentOrNull
-        },
-        quejas = obj["quejas"]?.jsonArray?.mapNotNull { it.jsonPrimitive.contentOrNull },
-        actividades = obj["actividades"]?.jsonArray?.mapNotNull { it.jsonPrimitive.contentOrNull }
+        rol = obj["rol"]?.jsonArray?.mapNotNull { it.jsonPrimitive.contentOrNull }
       )
     }
   }
