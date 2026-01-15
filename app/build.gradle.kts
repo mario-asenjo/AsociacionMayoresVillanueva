@@ -3,7 +3,7 @@ plugins {
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.serialization)
   alias(libs.plugins.ktlint)
-  kotlin("kapt")
+  alias(libs.plugins.ksp)
 }
 
 android {
@@ -71,12 +71,11 @@ dependencies {
   // Room
   implementation(libs.androidx.room.runtime)
   implementation(libs.androidx.room.ktx)
-  kapt(libs.androidx.room.compiler)
+  ksp(libs.androidx.room.compiler)
 
   // Tests
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.test.ext.junit)
   androidTestImplementation(libs.androidx.test.espresso.core)
   androidTestImplementation(libs.androidx.test.runner)
-  implementation(kotlin("test"))
 }

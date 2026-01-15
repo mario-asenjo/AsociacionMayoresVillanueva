@@ -51,11 +51,15 @@ class AgentKeywordParser {
     // 3) Apuntarse / desapuntarse
     if (containsAny(text, "apunt", "inscrib", "registr", "alta")) {
       // No extraemos id aún (futuro: NER o UI selection)
-      return AgentIntent.RegisterToActivity(activityReference = null)
+      return AgentIntent.RegisterToActivity(activityReference = extractActivityReference(text))
+    }
+
+    if (containsAny(text, "complet", "termin", "he hecho", "he realizad")) {
+      return AgentIntent.CompleteActivity(activityReference = extractActivityReference(text))
     }
 
     if (containsAny(text, "desapunt", "baja", "cancel", "anular")) {
-      return AgentIntent.UnregisterFromActivity(activityReference = null)
+      return AgentIntent.UnregisterFromActivity(activityReference = extractActivityReference(text))
     }
 
     // 4) Correo a monitores
@@ -79,5 +83,20 @@ class AgentKeywordParser {
     val normalized = Normalizer.normalize(lower, Normalizer.Form.NFD)
     // Quita diacríticos
     return normalized.replace("\\p{Mn}+".toRegex(), "")
+  }
+
+  private fun extractActivityReference(text: String): String? {
+    // números
+    Regex("""\b([1-9]|10)\b""").find(text)?.groupValues?.get(1)?.let { return it }
+
+    // ordinales comunes
+    return when {
+      containsAny(text, "primera", "primero") -> "1"
+      containsAny(text, "segunda", "segundo") -> "2"
+      containsAny(text, "tercera", "tercero") -> "3"
+      containsAny(text, "cuarta", "cuarto") -> "4"
+      containsAny(text, "quinta", "quinto") -> "5"
+      else -> null
+    }
   }
 }

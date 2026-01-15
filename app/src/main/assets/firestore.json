@@ -1,85 +1,56 @@
-{
-  "meta": {
-    "format": "JSON",
-    "version": "1.1.0",
-    "projectId": "hackaton-25-26",
-    "resourcePath": [],
-    "recursive": false,
-    "creationTime": 1768380597,
-    "app": "firefoo"
-  },
-  "data": {
-    "__collections__": {
-      "peticion_cumplimento": {
-        "QrlreVJY5RB3Y5bYuT9l": {
-          "duracion": "",
-          "estado": "",
-          "id_actividad": "",
-          "id_usuario": "",
-          "__collections__": {}
-        }
-      },
-      "quejas": {
-        "iI9k7ezjuMDX41oSLofo": {
-          "asunto": "",
-          "id_usuario": "",
-          "registro_horario": {
-            "__time__": "2026-01-13T11:55:34.724Z"
-          },
-          "titulo": "",
-          "__collections__": {}
-        }
-      },
-      "actividades": {
-        "iPKEPJrKD1nxJmJwK5vq": {
-          "etiquetas": [
-            ""
-          ],
-          "fecha_hora": {
-            "__time__": "2026-01-13T11:50:55.948Z"
-          },
-          "imagen ": "",
-          "nombre": "",
-          "ubicación": "",
-          "__collections__": {}
-        }
-      },
-      "registro ": {
-        "hV6BzhTiw5efG4Engq05": {
-          "estado": "",
-          "id_activiad": "",
-          "id_usuario": "",
-          "__collections__": {}
-        }
-      },
-      "titulo": {
-        "0MjA1A0fai1kB25btD0S": {
-          "titulo": "",
-          "__collections__": {}
-        }
-      },
-      "usuarios": {
-        "uTxjIlmxtBosRv07mWAH": {
-          "experiencia": 100,
-          "nombre": "",
-          "email": "",
-          "password": "",
-          "restricciones": [
-            ""
-          ],
-          "actividades:": [
-            ""
-          ],
-          "quejas": [
-            ""
-          ],
-          "rol": [
-            ""
-          ],
-
-          "__collections__": {}
-        }
-      }
-    }
-  }
+"actividades": {
+"act1": {
+"etiquetas": ["movilidad", "suave"],
+"fecha_hora": { "__time__": "2026-01-15T09:30:00.000Z" },
+"imagen ": "",
+"nombre": "Gimnasia suave",
+"ubicación": "Sala 1",
+"__collections__": {}
+},
+"act2": {
+"etiquetas": ["cardio", "social"],
+"fecha_hora": { "__time__": "2026-01-15T11:00:00.000Z" },
+"imagen ": "",
+"nombre": "Paseo en grupo",
+"ubicación": "Parque",
+"__collections__": {}
+},
+"act3": {
+"etiquetas": ["flexibilidad"],
+"fecha_hora": { "__time__": "2026-01-15T16:30:00.000Z" },
+"imagen ": "",
+"nombre": "Estiramientos guiados",
+"ubicación": "Sala 2",
+"__collections__": {}
+},
+"act4": {
+"etiquetas": ["equilibrio", "prevención"],
+"fecha_hora": { "__time__": "2026-01-16T10:00:00.000Z" },
+"imagen ": "",
+"nombre": "Equilibrio y prevención de caídas",
+"ubicación": "Sala 1",
+"__collections__": {}
+},
+"act5": {
+"etiquetas": ["respiración", "relajación"],
+"fecha_hora": { "__time__": "2026-01-16T18:00:00.000Z" },
+"imagen ": "",
+"nombre": "Respiración y relajación",
+"ubicación": "Sala 3",
+"__collections__": {}
+}
+},
+"usuarios": {
+"uTxjIlmxtBosRv07mWAH": {
+"experiencia": 100,
+"nombre": "Usuario de prueba",
+"rol": ["usuario"],
+"__collections__": {}
+},
+"monitor1": {
+"experiencia": 0,
+"nombre": "Monitor de prueba",
+"rol": ["monitor"],
+"__collections__": {}
+}
 }

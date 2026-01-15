@@ -17,7 +17,7 @@ class AgentOrchestrator(private val parser: AgentKeywordParser = AgentKeywordPar
       }
 
       is AgentIntent.RegisterToActivity -> {
-        AgentResponse.ShowMessage("Te apunto a la actividad (placeholder).")
+        AgentResponse.RequestEnroll(intent.activityReference)
       }
 
       is AgentIntent.UnregisterFromActivity -> {
@@ -30,6 +30,10 @@ class AgentOrchestrator(private val parser: AgentKeywordParser = AgentKeywordPar
 
       is AgentIntent.RedeemRewards -> {
         AgentResponse.ShowMessage("Recompensas: en construcción…")
+      }
+
+      is AgentIntent.CompleteActivity -> {
+        AgentResponse.RequestComplete(intent.activityReference)
       }
 
       is AgentIntent.Unknown -> {

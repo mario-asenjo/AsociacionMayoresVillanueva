@@ -48,6 +48,10 @@
       android:name="com.masenjoandroid.asociacionmayoresvillanueva.ui.activity.EnrollActivity"
       android:exported="false" />
 
+    <activity
+      android:name="com.masenjoandroid.asociacionmayoresvillanueva.ui.activity.CompleteActivityActivity"
+      android:exported="false" />
+
   </application>
 </manifest>
 

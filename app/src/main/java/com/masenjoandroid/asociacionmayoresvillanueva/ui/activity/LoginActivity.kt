@@ -36,10 +36,13 @@ class LoginActivity : AppCompatActivity() {
       lifecycleScope.launch {
         val result = usersRepository.login(email, password)
 
-        result.onSuccess {
-          // TODO: Navegar a pantalla principal
-          // startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-          // finish()
+        result.onSuccess { user ->
+          val i = Intent(this@LoginActivity, MainActivity::class.java).apply {
+            putExtra("EXTRA_USER_ID", user.id)
+            putExtra("EXTRA_ROLE", user.rol)
+          }
+          startActivity(i)
+          finish()
         }
 
         result.onFailure {

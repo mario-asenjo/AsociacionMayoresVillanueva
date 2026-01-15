@@ -1,5 +1,8 @@
 package com.masenjoandroid.asociacionmayoresvillanueva.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class UserProfile(
   val id: String,
   val nombre: String,

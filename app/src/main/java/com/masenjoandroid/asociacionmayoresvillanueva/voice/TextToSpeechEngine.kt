@@ -19,4 +19,9 @@ interface TextToSpeechEngine {
    * Libera los recursos del motor.
    */
   fun shutdown()
+
+  // NUEVO: callback cuando termina de hablar
+  fun speak(text: String, onDone: () -> Unit) {
+    speak(text) // por defecto no hay callback si el engine no lo implementa
+  }
 }
