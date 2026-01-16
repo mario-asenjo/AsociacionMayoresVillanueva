@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.masenjoandroid.asociacionmayoresvillanueva.app.R
 import com.masenjoandroid.asociacionmayoresvillanueva.app.databinding.ItemFeedbackBinding
 import com.masenjoandroid.asociacionmayoresvillanueva.domain.model.FeedbackItem
 
@@ -52,22 +53,30 @@ class MonitorAdapter(private val onReviewClick: (FeedbackItem) -> Unit) :
         "Sin comentarios."
       }
 
-      // 3. Adjuntos
+      // 3. ADJUNTOS (LÓGICA FOTO GRANDE)
       if (item.attachmentUri.isNullOrEmpty()) {
         // No hay foto
         binding.attachmentImage.visibility = View.GONE
         binding.playIcon.visibility = View.GONE
         binding.noAttachmentText.visibility = View.VISIBLE
       } else {
-        // Hay foto/video (En un caso real usaríamos Glide o Coil para cargar la URL)
+        // Sí hay adjunto -> Mostramos la foto grande según la actividad
         binding.attachmentImage.visibility = View.VISIBLE
         binding.noAttachmentText.visibility = View.GONE
 
-        // Si es video mostramos el icono de play
-        binding.playIcon.visibility = if (item.isVideo) View.VISIBLE else View.GONE
+        // Detectamos qué foto poner según el nombre de la actividad
+        val titleLower = item.activityTitle.lowercase()
+        val imageRes = when {
+          titleLower.contains("paseo") -> R.drawable.img_paseo
+          titleLower.contains("gimnasia") -> R.drawable.img_gimnasia
+          titleLower.contains("estiramientos") -> R.drawable.img_estiramientos
+          titleLower.contains("yoga") -> R.drawable.img_estiramientos // Reutilizamos si quieres
+          else -> R.drawable.ic_activity_placeholder
+        }
+        binding.attachmentImage.setImageResource(imageRes)
 
-        // Placeholder visual porque no tenemos librería de imágenes aún
-        // binding.attachmentImage.setImageURI(Uri.parse(item.attachmentUri))
+        // Si es video mostramos el icono de play encima de la foto
+        binding.playIcon.visibility = if (item.isVideo) View.VISIBLE else View.GONE
       }
 
       // Estado Revisado
