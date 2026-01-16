@@ -19,12 +19,13 @@
     android:label="@string/app_name"
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
-    android:theme="@style/Theme.AsociacionMayoresVillanueva">
+    android:theme="@style/Theme.AsociacionMayoresVillanueva.Splash">
 
     <!-- LOGIN = PANTALLA INICIAL -->
     <activity
       android:name="com.masenjoandroid.asociacionmayoresvillanueva.ui.activity.LoginActivity"
-      android:exported="true">
+      android:exported="true"
+      android:theme="@style/Theme.AsociacionMayoresVillanueva">
 
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />

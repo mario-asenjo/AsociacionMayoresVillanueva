@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import kotlinx.coroutines.delay
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -46,8 +48,17 @@ class MainActivity : AppCompatActivity() {
   private val adapter = ActivitiesAdapter()
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
+    val splashScreen = installSplashScreen()
 
+    var keepSplash = true
+    splashScreen.setKeepOnScreenCondition { keepSplash }
+
+    super.onCreate(savedInstanceState)
+    // Simulamos carga real
+    lifecycleScope.launch {
+      delay(1500)
+      keepSplash = false
+    }
     // Inicializamos TTS y STT
     ttsManager = TextToSpeechManager(this)
     sttManager = SpeechToTextManager(this)
