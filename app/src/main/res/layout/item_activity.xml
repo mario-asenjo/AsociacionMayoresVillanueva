@@ -1,62 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardRoot"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/cardRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_marginBottom="@dimen/space_s"
+  app:cardUseCompatPadding="true"
+  app:cardCornerRadius="@dimen/card_radius"
+  app:cardElevation="6dp"
+  app:cardBackgroundColor="@color/activity_card_bg">
+
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/space_s"
-    app:cardUseCompatPadding="true"
-    app:cardCornerRadius="@dimen/card_radius">
+    android:padding="@dimen/space_m">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/space_m">
+    <ImageView
+      android:id="@+id/photo"
+      android:layout_width="@dimen/photo_size"
+      android:layout_height="@dimen/photo_size"
+      android:src="@drawable/ic_activity_placeholder"
+      android:contentDescription="@string/cd_activity_photo"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
 
-        <ImageView
-            android:id="@+id/photo"
-            android:layout_width="@dimen/photo_size"
-            android:layout_height="@dimen/photo_size"
-            android:src="@drawable/ic_activity_placeholder"
-            android:contentDescription="@string/cd_activity_photo"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+      android:id="@+id/title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="Actividad"
+      android:textSize="18sp"
+      android:textStyle="bold"
+      android:textColor="@color/text_primary"
+      app:layout_constraintTop_toTopOf="@id/photo"
+      app:layout_constraintStart_toEndOf="@id/photo"
+      app:layout_constraintEnd_toEndOf="parent"
+      android:layout_marginStart="@dimen/space_m" />
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Actividad"
-            android:textSize="@dimen/text_body"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="@id/photo"
-            app:layout_constraintStart_toEndOf="@id/photo"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="@dimen/space_m" />
+    <TextView
+      android:id="@+id/subtitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="Fecha · Lugar"
+      android:textSize="14sp"
+      android:textColor="@color/text_secondary"
+      app:layout_constraintTop_toBottomOf="@id/title"
+      app:layout_constraintStart_toStartOf="@id/title"
+      app:layout_constraintEnd_toEndOf="parent"
+      android:layout_marginTop="6dp" />
 
-        <TextView
-            android:id="@+id/subtitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Fecha · Lugar"
-            android:textSize="@dimen/text_small"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            app:layout_constraintStart_toStartOf="@id/title"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/space_xs" />
+    <TextView
+      android:id="@+id/tags"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="#tag1 #tag2"
+      android:textSize="14sp"
+      android:textColor="@color/blue_primary"
+      android:layout_marginTop="6dp"
+      app:layout_constraintTop_toBottomOf="@id/subtitle"
+      app:layout_constraintStart_toStartOf="@id/title"
+      app:layout_constraintEnd_toEndOf="parent" />
 
-        <TextView
-            android:id="@+id/tags"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="#tag1 #tag2"
-            android:textSize="@dimen/text_small"
-            app:layout_constraintTop_toBottomOf="@id/subtitle"
-            app:layout_constraintStart_toStartOf="@id/title"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/space_xs" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

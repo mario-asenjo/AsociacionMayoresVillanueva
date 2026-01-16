@@ -4,117 +4,159 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:padding="24dp">
+  android:padding="24dp"
+  android:background="@color/background_main">
 
-  <TextView
-    android:id="@+id/titleLabel"
+  <com.google.android.material.card.MaterialCardView
+    android:id="@+id/completeCard"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:text="Completar actividad"
-    android:textSize="22sp"
-    android:textStyle="bold"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintVertical_bias="0.40">
 
-  <TextView
-    android:id="@+id/activityTitle"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:textSize="18sp"
-    android:layout_marginTop="12dp"
-    app:layout_constraintTop_toBottomOf="@id/titleLabel"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="20dp">
 
-  <TextView
-    android:id="@+id/status"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:text="Preparando…"
-    android:textSize="16sp"
-    android:layout_marginTop="16dp"
-    app:layout_constraintTop_toBottomOf="@id/activityTitle"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
+      <TextView
+        android:id="@+id/titleLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Completar actividad"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-  <TextView
-    android:id="@+id/ratingLabel"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:text="Valoración (1–5):"
-    android:layout_marginTop="16dp"
-    app:layout_constraintTop_toBottomOf="@id/status"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
+      <TextView
+        android:id="@+id/activityTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/titleLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-  <TextView
-    android:id="@+id/ratingValue"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:text="—"
-    android:textSize="18sp"
-    app:layout_constraintTop_toBottomOf="@id/ratingLabel"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
+      <TextView
+        android:id="@+id/status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Preparando…"
+        android:textSize="16sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="14dp"
+        app:layout_constraintTop_toBottomOf="@id/activityTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-  <TextView
-    android:id="@+id/difficultyLabel"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:text="Parte difícil:"
-    android:layout_marginTop="12dp"
-    app:layout_constraintTop_toBottomOf="@id/ratingValue"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
+      <TextView
+        android:id="@+id/ratingLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Valoración (1–5):"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-  <TextView
-    android:id="@+id/difficultyValue"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:text="—"
-    app:layout_constraintTop_toBottomOf="@id/difficultyLabel"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
+      <TextView
+        android:id="@+id/ratingValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="—"
+        android:textSize="18sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="6dp"
+        app:layout_constraintTop_toBottomOf="@id/ratingLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-  <TextView
-    android:id="@+id/mediaLabel"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:text="Archivo:"
-    android:layout_marginTop="12dp"
-    app:layout_constraintTop_toBottomOf="@id/difficultyValue"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
+      <TextView
+        android:id="@+id/difficultyLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Parte difícil:"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/ratingValue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-  <TextView
-    android:id="@+id/mediaValue"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:text="Sin archivo"
-    app:layout_constraintTop_toBottomOf="@id/mediaLabel"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
+      <TextView
+        android:id="@+id/difficultyValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="—"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="6dp"
+        app:layout_constraintTop_toBottomOf="@id/difficultyLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/startVoiceButton"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:text="Reiniciar por voz"
-    android:layout_marginTop="20dp"
-    app:layout_constraintTop_toBottomOf="@id/mediaValue"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
+      <TextView
+        android:id="@+id/mediaLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Archivo:"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/difficultyValue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/confirmButton"
-    style="?attr/materialButtonOutlinedStyle"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:text="Enviar"
-    android:layout_marginTop="10dp"
-    app:layout_constraintTop_toBottomOf="@id/startVoiceButton"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
+      <TextView
+        android:id="@+id/mediaValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Sin archivo"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="6dp"
+        app:layout_constraintTop_toBottomOf="@id/mediaLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/startVoiceButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Reiniciar por voz"
+        android:minHeight="54dp"
+        android:layout_marginTop="18dp"
+        app:cornerRadius="18dp"
+        app:layout_constraintTop_toBottomOf="@id/mediaValue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/confirmButton"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Enviar"
+        android:minHeight="54dp"
+        android:layout_marginTop="10dp"
+        app:cornerRadius="18dp"
+        app:layout_constraintTop_toBottomOf="@id/startVoiceButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+  </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
