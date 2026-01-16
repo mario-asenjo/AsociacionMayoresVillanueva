@@ -5,6 +5,20 @@
     <color name="md_theme_light_background">#FFFFFF</color>
     <color name="md_theme_light_onBackground">#1B1B1B</color>
 
+    <color name="blue_primary">#00537A</color>
+    <color name="blue_light">#80B7C7</color>
+
+    <color name="yellow_primary">#F3C30E</color>
+    <color name="yellow_soft">#F7E4A0</color>
+
+    <color name="background_main">#F7F4E0</color>
+
+    <color name="text_primary">#1F1F1F</color>
+    <color name="text_secondary">#6B6B6B</color>
+    <color name="activity_card_bg">#F3DC9E</color>
+
+
+
     <color name="md_theme_dark_primary">#81C784</color>
     <color name="md_theme_dark_onPrimary">#0B0B0B</color>
     <color name="md_theme_dark_background">#121212</color>

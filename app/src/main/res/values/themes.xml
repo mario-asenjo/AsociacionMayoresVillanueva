@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <!-- Forzamos LIGHT para evitar fondos negros por DayNight mientras estabilizas la UI -->
-  <style name="Theme.AsociacionMayoresVillanueva" parent="Theme.Material3.Light.NoActionBar">
-    <item name="colorPrimary">@color/md_theme_light_primary</item>
-    <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
-
-    <item name="android:colorBackground">@color/md_theme_light_background</item>
-    <item name="colorOnBackground">@color/md_theme_light_onBackground</item>
-
-    <!-- CLAVE: fondo de ventana -->
-    <item name="android:windowBackground">@color/md_theme_light_background</item>
-
+  <style name="Theme.AsociacionMayoresVillanueva" parent="Theme.Material3.DayNight.NoActionBar">
+    <item name="colorPrimary">@color/blue_primary</item>
+    <item name="colorSecondary">@color/yellow_primary</item>
+    <item name="android:windowBackground">@color/background_main</item>
+    <item name="android:statusBarColor">@color/blue_primary</item>
   </style>
+
 </resources>
