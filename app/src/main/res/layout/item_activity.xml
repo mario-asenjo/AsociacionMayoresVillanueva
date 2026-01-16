@@ -8,6 +8,7 @@
   android:layout_marginBottom="@dimen/space_s"
   app:cardUseCompatPadding="true"
   app:cardCornerRadius="@dimen/card_radius"
+  app:cardElevation="6dp"
   app:cardBackgroundColor="@color/activity_card_bg">
 
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,9 +30,9 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:text="Actividad"
-      android:textSize="@dimen/text_body"
+      android:textSize="18sp"
       android:textStyle="bold"
-      android:textColor="@android:color/black"
+      android:textColor="@color/text_primary"
       app:layout_constraintTop_toTopOf="@id/photo"
       app:layout_constraintStart_toEndOf="@id/photo"
       app:layout_constraintEnd_toEndOf="parent"
@@ -42,24 +43,24 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:text="Fecha · Lugar"
-      android:textSize="@dimen/text_small"
-      android:textColor="@color/text_primary"
+      android:textSize="14sp"
+      android:textColor="@color/text_secondary"
       app:layout_constraintTop_toBottomOf="@id/title"
       app:layout_constraintStart_toStartOf="@id/title"
       app:layout_constraintEnd_toEndOf="parent"
-      android:layout_marginTop="@dimen/space_xs" />
+      android:layout_marginTop="6dp" />
 
     <TextView
       android:id="@+id/tags"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:text="#tag1 #tag2"
-      android:textSize="@dimen/text_small"
-      android:textColor="@color/text_secondary"
+      android:textSize="14sp"
+      android:textColor="@color/blue_primary"
+      android:layout_marginTop="6dp"
       app:layout_constraintTop_toBottomOf="@id/subtitle"
       app:layout_constraintStart_toStartOf="@id/title"
-      app:layout_constraintEnd_toEndOf="parent"
-      android:layout_marginTop="@dimen/space_xs" />
+      app:layout_constraintEnd_toEndOf="parent" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
